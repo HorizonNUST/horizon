@@ -2,7 +2,7 @@
 
 int main()
 {
-    Screen screen;
+    engine::GameScreen screen;
 
     screen.StartLoop();
 

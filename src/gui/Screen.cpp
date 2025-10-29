@@ -1,15 +1,15 @@
 #include "Screen.hpp"
 
-Screen::Screen()
+engine::GameScreen::GameScreen()
 {
     m_window = sf::RenderWindow(sf::VideoMode({800u, 600u}), "Horizon", sf::Style::Titlebar | sf::Style::Close);
 }
 
-Screen::~Screen()
+engine::GameScreen::~GameScreen()
 {
 }
 
-void Screen::StartLoop()
+void engine::GameScreen::StartLoop()
 {
     while (m_window.isOpen())
     {

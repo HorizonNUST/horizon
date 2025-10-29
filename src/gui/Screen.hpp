@@ -5,15 +5,18 @@
 
 #include "UIElement.hpp"
 
-class Screen
+namespace engine
 {
-private:
-    std::vector<UIElement> m_ui_elements;
-    sf::RenderWindow m_window;
+    class GameScreen
+    {
+    private:
+        std::vector<gui::elements::UIElement> m_ui_elements;
+        sf::RenderWindow m_window;
 
-public:
-    Screen();
-    ~Screen();
+    public:
+        GameScreen();
+        ~GameScreen();
 
-    void StartLoop();
-};
+        void StartLoop();
+    };
+}

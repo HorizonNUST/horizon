@@ -1,20 +1,24 @@
 #include <functional>
 #include <vector>
 
-template <typename... Args>
-class Event
+namespace utils
 {
-    std::vector<std::function<void(Args...)>> listeners;
-
-public:
-    void subscribe(std::function<void(Args)> func)
+    template <typename... Args>
+    class Event
     {
-        listeners.push_back(func);
-    }
+        std::vector<std::function<void(Args...)>> listeners;
 
-    void trigger(Args... args)
-    {
-        for (auto &f : listeners)
-            f(args...);
-    }
-};
+    public:
+        void subscribe(std::function<void(Args)> func)
+        {
+            listeners.push_back(func);
+        }
+
+        void trigger(Args... args)
+        {
+            for (auto &f : listeners)
+                f(args...);
+        }
+    };
+
+}
