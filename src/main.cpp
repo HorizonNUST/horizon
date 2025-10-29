@@ -1,7 +1,10 @@
-#include <fmt/core.h>
+#include "Screen.hpp"
 
-int main() {
-    fmt::print("Hello from C++ template!\n");
+int main()
+{
+    Screen screen;
+
+    screen.StartLoop();
 
     return 0;
 }

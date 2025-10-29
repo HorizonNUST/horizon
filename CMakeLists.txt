@@ -10,6 +10,7 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_warn_duplicate_lib
 
 # CHANGE: IMPORT PACKAGES
 find_package(fmt CONFIG REQUIRED)
+find_package(SFML COMPONENTS Network Graphics Window Audio System CONFIG REQUIRED)
 # END CHANGE
 
 # get all files in src directory
@@ -67,5 +68,10 @@ target_include_directories(
 target_link_libraries(
     main PRIVATE
     fmt::fmt
+    SFML::Network
+    SFML::Graphics
+    SFML::Window
+    SFML::Audio
+    SFML::System
 )
 # END CHANGE
