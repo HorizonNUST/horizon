@@ -65,6 +65,15 @@ target_include_directories(
 )
 # files in external/included are also included to allow downloading libraries and using them
 
+add_custom_target(copy_assets ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_SOURCE_DIR}/assets"
+    "${CMAKE_CURRENT_BINARY_DIR}/assets"
+    COMMENT "Copying asset files..."
+)
+
+add_dependencies(main copy_assets)
+
 # CHANGE: link installed libraries here
 target_link_libraries(
     main PRIVATE
