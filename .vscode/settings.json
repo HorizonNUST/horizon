@@ -37,6 +37,9 @@
         "algorithm": "cpp",
         "iostream": "cpp",
         "__config": "cpp",
-        "__config_site": "cpp"
+        "__config_site": "cpp",
+        "__split_buffer": "cpp",
+        "deque": "cpp",
+        "list": "cpp"
     },
 }

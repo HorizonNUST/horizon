@@ -10,17 +10,18 @@ engine::gui::elements::TextElement::TextElement(const std::string &text, const s
 
     m_text = sf::Text(m_font);
 
-    setText(text);
+    m_text->setString(text);
+    m_text->setPosition(position);
 }
 
 inline void engine::gui::elements::TextElement::setText(const std::string &newText)
 {
     if (m_text)
-        m_text.value().setString(newText);
+        m_text->setString(newText);
 }
 
 void engine::gui::elements::TextElement::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     if (m_text)
-        target.draw(m_text.value(), states);
+        target.draw(*m_text, states);
 }

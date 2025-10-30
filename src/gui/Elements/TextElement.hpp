@@ -1,3 +1,4 @@
+#pragma once
 #include "UIElement.hpp"
 
 namespace engine::gui::elements
@@ -5,7 +6,6 @@ namespace engine::gui::elements
     class TextElement : public UIElement
     {
     public:
-        TextElement() = delete;
         TextElement(const std::string &text, const sf::Vector2f &position);
 
         inline void setText(const std::string &newText);

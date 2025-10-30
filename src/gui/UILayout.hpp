@@ -1,9 +1,12 @@
-#include <vector>
+#pragma once
+#include <array>
 #include <functional>
 
 #include <SFML/Graphics.hpp>
 
+#include "UIElement.hpp"
 #include "TextElement.hpp"
+#include "ImageElement.hpp"
 #include "utils.hpp"
 
 namespace engine
@@ -11,12 +14,10 @@ namespace engine
     class UILayout
     {
     private:
-        gui::elements::TextElement elementA;
+        std::vector<std::unique_ptr<engine::gui::elements::UIElement>> m_elements;
 
     public:
         UILayout();
-        
-        static utils::Event<std::string> elementAEvent;
 
         void DrawLayout(sf::RenderWindow &window);
     };
