@@ -3,15 +3,15 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "UIElement.hpp"
+#include "UILayout.hpp"
 
 namespace engine
 {
     class GameScreen
     {
     private:
-        std::vector<gui::elements::UIElement> m_ui_elements;
         sf::RenderWindow m_window;
+        UILayout m_ui_layout;
 
     public:
         GameScreen();

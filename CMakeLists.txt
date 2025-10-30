@@ -60,6 +60,7 @@ add_executable(
 target_include_directories(
     main PRIVATE
     ${FOLDERS}
+    "${CMAKE_SOURCE_DIR}/src" # for folders inside src as well
     "${CMAKE_SOURCE_DIR}/external/included"
 )
 # files in external/included are also included to allow downloading libraries and using them

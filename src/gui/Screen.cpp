@@ -20,6 +20,9 @@ void engine::GameScreen::StartLoop()
         }
 
         m_window.clear();
+
+        m_ui_layout.DrawLayout(m_window);
+
         m_window.display();
     }
 }
