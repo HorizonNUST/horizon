@@ -7,6 +7,7 @@
 #include "UIElement.hpp"
 #include "TextElement.hpp"
 #include "ImageElement.hpp"
+#include "ButtonElement.hpp"
 #include "utils.hpp"
 
 namespace engine
