@@ -10,6 +10,8 @@
 #include "ButtonElement.hpp"
 #include "utils.hpp"
 
+#include "GameScreenData.hpp"
+
 namespace engine
 {
     class UILayout
@@ -20,6 +22,7 @@ namespace engine
     public:
         UILayout();
 
+        void Update(const GameScreenData& data);
         void DrawLayout(sf::RenderWindow &window);
     };
 }

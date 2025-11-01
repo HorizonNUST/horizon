@@ -1,4 +1,5 @@
 #include "ButtonElement.hpp"
+#include "utils.hpp"
 
 engine::gui::elements::ButtonElement::ButtonElement(const std::string &text, const sf::Vector2f &position, ButtonConfig config)
 {
@@ -35,6 +36,11 @@ inline void engine::gui::elements::ButtonElement::setText(const std::string &new
 {
     if (m_text)
         m_text->setString(newText);
+}
+
+void engine::gui::elements::ButtonElement::update(const GameScreenData &data)
+{
+    PRINT("MousePos: {" + std::to_string(data.mousePos.x) + ", " + std::to_string(data.mousePos.y) + "}");
 }
 
 void engine::gui::elements::ButtonElement::draw(sf::RenderTarget &target, sf::RenderStates states) const

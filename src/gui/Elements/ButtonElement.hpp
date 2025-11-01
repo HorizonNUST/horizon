@@ -1,5 +1,6 @@
 #pragma once
 #include "UIElement.hpp"
+#include "GameScreenData.hpp"
 
 namespace engine::gui::elements
 {
@@ -19,6 +20,8 @@ namespace engine::gui::elements
         ButtonElement(const std::string &text, const sf::Vector2f &position, ButtonConfig config = {});
 
         inline void setText(const std::string &newText);
+
+        void update(const GameScreenData& data) override;
 
     private:
         sf::Font m_font;

@@ -8,6 +8,14 @@ engine::UILayout::UILayout()
     m_elements.emplace_back(std::make_unique<engine::gui::elements::ButtonElement>("Press Enter to Start", sf::Vector2f{250.f, 500.f}));
 }
 
+void engine::UILayout::Update(const GameScreenData &data)
+{
+    for (const auto& element : m_elements)
+    {
+        element->update(data);
+    }
+}
+
 void engine::UILayout::DrawLayout(sf::RenderWindow &window)
 {
     for (auto &element : m_elements)

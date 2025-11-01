@@ -1,5 +1,7 @@
 #include "Screen.hpp"
 
+#include "GameScreenData.hpp"
+
 engine::GameScreen::GameScreen()
 {
     m_window = sf::RenderWindow(sf::VideoMode({800u, 600u}), "Horizon", sf::Style::Titlebar | sf::Style::Close);
@@ -21,6 +23,13 @@ void engine::GameScreen::StartLoop()
 
         m_window.clear();
 
+        // Update
+        GameScreenData data;
+        data.mousePos = sf::Mouse::getPosition();
+        
+        m_ui_layout.Update(data);
+
+        // Draw
         m_ui_layout.DrawLayout(m_window);
 
         m_window.display();
