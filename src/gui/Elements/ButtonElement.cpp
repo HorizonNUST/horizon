@@ -2,6 +2,7 @@
 #include "utils.hpp"
 
 engine::gui::elements::ButtonElement::ButtonElement(const std::string &text, const sf::Vector2f &position, ButtonConfig config)
+    : m_config(config)
 {
     if (!m_font.openFromFile("assets/Inter/Inter.ttf"))
     {
@@ -40,7 +41,34 @@ inline void engine::gui::elements::ButtonElement::setText(const std::string &new
 
 void engine::gui::elements::ButtonElement::update(const GameScreenData &data)
 {
-    PRINT("MousePos: {" + std::to_string(data.mousePos.x) + ", " + std::to_string(data.mousePos.y) + "}");
+    // aliases
+    const int &mousePosX = data.mousePos.x;
+    const int &mousePosY = data.mousePos.y;
+    const float &topSidePos = m_shape.getPosition().y;
+    const float &bottomSidePos = topSidePos + m_shape.getSize().y;
+    const float &leftSizePos = m_shape.getPosition().x;
+    const float &rightSidePos = leftSizePos + m_shape.getSize().x;
+
+    if ((mousePosX >= leftSizePos && mousePosX < rightSidePos) &&
+        (mousePosY >= topSidePos && mousePosY < bottomSidePos))
+    {
+        if (data.isClicking)
+        {
+            // click logic
+            PRINT("CLICK");
+            m_text->setStyle(m_config.fontClickStyle);
+        }
+        else
+        {
+            // hover logic
+            // PRINT("HOVER");
+            m_text->setStyle(m_config.fontHoverStyle);
+        }
+    }
+    else
+    {
+        m_text->setStyle(m_config.fontStyle);
+    }
 }
 
 void engine::gui::elements::ButtonElement::draw(sf::RenderTarget &target, sf::RenderStates states) const
