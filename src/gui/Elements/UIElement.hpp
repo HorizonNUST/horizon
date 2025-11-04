@@ -12,7 +12,7 @@ namespace engine::gui::elements
         virtual ~UIElement() = default; // always good practice in base classes
 
         /// @brief Used to pass in screen data to elements
-        virtual void update(const GameScreenData &data) {};
+        virtual void Update(const GameScreenData &data) {};
 
     protected:
         /// @brief Draw method to implement for `sf::Drawable`

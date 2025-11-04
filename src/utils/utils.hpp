@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 
+#include "__macros.hpp"
+
 namespace utils
 {
     struct printConfig
@@ -18,7 +20,7 @@ namespace utils
         }
     };
 
-    inline void printLine(const std::string &fileName, const std::string &functionName, int lineNum, const std::string &message)
+    inline void printLine(const std::string &fileName, const std::string &functionName, int lineNum, const std::string &message, const std::string &prefix = "")
     {
         using cf = printConfig;
 
@@ -27,12 +29,12 @@ namespace utils
         {
             debugPrefix << "["
                         << (cf::fileName ? fileName : "")
-                        << (cf::functionName ? (" @ " + functionName) : "")
                         << (cf::printLineNum ? (" : " + std::to_string(lineNum)) : "")
+                        << (cf::functionName ? (" @ " + functionName) : "")
                         << "] ";
         }
 
-        std::cout << debugPrefix.str() << message << "\n";
+        std::cout << prefix << debugPrefix.str() << message << "\n";
     }
 
     template <typename... Args>
@@ -55,3 +57,9 @@ namespace utils
 }
 
 #define PRINT(message) utils::printLine(__FILE_NAME__, __func__, __LINE__, message)
+
+#if DEBUG == 1
+#define DEBUG_PRINT(message) utils::printLine(__FILE_NAME__, __func__, __LINE__, message, "* ")
+#else
+#define DEBUG_PRINT(message)
+#endif

@@ -14,7 +14,7 @@ engine::gui::elements::TextElement::TextElement(const std::string &text, const s
     m_text->setPosition(position);
 }
 
-inline void engine::gui::elements::TextElement::setText(const std::string &newText)
+inline void engine::gui::elements::TextElement::SetText(const std::string &newText)
 {
     if (m_text)
         m_text->setString(newText);

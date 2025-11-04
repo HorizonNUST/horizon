@@ -41,6 +41,12 @@
         "__split_buffer": "cpp",
         "deque": "cpp",
         "list": "cpp",
-        "ios": "cpp"
+        "ios": "cpp",
+        "variant": "cpp",
+        "__locale": "cpp",
+        "cstdarg": "cpp",
+        "execution": "cpp",
+        "mutex": "cpp",
+        "streambuf": "cpp"
     },
 }

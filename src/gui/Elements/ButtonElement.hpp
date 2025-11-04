@@ -1,4 +1,6 @@
 #pragma once
+#include <functional>
+
 #include "UIElement.hpp"
 #include "GameScreenData.hpp"
 
@@ -22,11 +24,13 @@ namespace engine::gui::elements
     class ButtonElement : public UIElement
     {
     public:
-        ButtonElement(const std::string &text, const sf::Vector2f &position, ButtonConfig config = {});
+        ButtonElement(const std::string &text, const sf::Vector2f &position, std::function<void()> callback = []() {}, ButtonConfig config = {});
 
-        inline void setText(const std::string &newText);
+        inline void SetText(const std::string &newText);
 
-        void update(const GameScreenData &data) override;
+        void Update(const GameScreenData &data) override;
+
+        void SetCallback(std::function<void()> callback);
 
     private:
         ButtonConfig m_config;
@@ -34,6 +38,9 @@ namespace engine::gui::elements
         sf::Font m_font;
         std::optional<sf::Text> m_text;
         sf::RectangleShape m_shape;
+
+        bool m_pressedThisFrame = false;
+        std::function<void()> m_callback;
 
     protected:
         void draw(sf::RenderTarget &target, sf::RenderStates states) const override;

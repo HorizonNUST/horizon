@@ -8,7 +8,7 @@ namespace engine::gui::elements
     public:
         TextElement(const std::string &text, const sf::Vector2f &position);
 
-        inline void setText(const std::string &newText);
+        inline void SetText(const std::string &newText);
 
     private:
         sf::Font m_font;

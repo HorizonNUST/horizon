@@ -1,8 +1,8 @@
 #include "ButtonElement.hpp"
 #include "utils.hpp"
 
-engine::gui::elements::ButtonElement::ButtonElement(const std::string &text, const sf::Vector2f &position, ButtonConfig config)
-    : m_config(config)
+engine::gui::elements::ButtonElement::ButtonElement(const std::string &text, const sf::Vector2f &position, std::function<void()> callback, ButtonConfig config)
+    : m_callback(callback), m_config(config)
 {
     if (!m_font.openFromFile("assets/Inter/Inter.ttf"))
     {
@@ -33,13 +33,13 @@ engine::gui::elements::ButtonElement::ButtonElement(const std::string &text, con
                      textBounds.size.y + 2 * config.padding.y});
 }
 
-inline void engine::gui::elements::ButtonElement::setText(const std::string &newText)
+inline void engine::gui::elements::ButtonElement::SetText(const std::string &newText)
 {
     if (m_text)
         m_text->setString(newText);
 }
 
-void engine::gui::elements::ButtonElement::update(const GameScreenData &data)
+void engine::gui::elements::ButtonElement::Update(const GameScreenData &data)
 {
     // aliases
     const int &mousePosX = data.mousePos.x;
@@ -55,20 +55,31 @@ void engine::gui::elements::ButtonElement::update(const GameScreenData &data)
         if (data.isClicking)
         {
             // click logic
-            PRINT("CLICK");
-            m_text->setStyle(m_config.fontClickStyle);
+            if (!m_pressedThisFrame)
+            {
+                DEBUG_PRINT("CLICK");
+                m_callback();
+                m_text->setStyle(m_config.fontClickStyle);
+
+                m_pressedThisFrame = true;
+            }
         }
         else
         {
             // hover logic
-            // PRINT("HOVER");
             m_text->setStyle(m_config.fontHoverStyle);
+            m_pressedThisFrame = false;
         }
     }
     else
     {
         m_text->setStyle(m_config.fontStyle);
     }
+}
+
+void engine::gui::elements::ButtonElement::SetCallback(std::function<void()> callback)
+{
+    m_callback = callback;
 }
 
 void engine::gui::elements::ButtonElement::draw(sf::RenderTarget &target, sf::RenderStates states) const
