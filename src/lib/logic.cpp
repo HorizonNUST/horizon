@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 
+#include "utils.hpp"
+
 /// @brief Declaring global variables to use 
 int energy;
 int score;
