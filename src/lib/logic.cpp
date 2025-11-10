@@ -49,6 +49,9 @@ void rest()
 // Function to interrogate the suspects
 std::string Interrogate(const std::string suspect_name)
 {
+	energy -= 20;
+	if (energy < 0)
+		energy = 0;
 	int reaction = rand() % 4;
 	if (reaction == 0)
 	{
@@ -66,14 +69,14 @@ std::string Interrogate(const std::string suspect_name)
 	{
 		return suspect_name + "answers your questions confidently and denies everything.";
 	}
-	energy -= 20;
-	if (energy < 0)
-		energy = 0;
 }
 
 // Function to search for clues
 bool searchClues()
 {
+	energy -= 30;
+	if (energy < 0)
+		energy = 0;
 	bool found = rand() % 3;
 	if (found)
 	{
@@ -86,7 +89,5 @@ bool searchClues()
 	{
 		return false;
 	}
-	energy -= 30;
-	if (energy < 0)
-		energy = 0;
 }
+
