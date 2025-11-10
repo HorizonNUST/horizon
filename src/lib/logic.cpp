@@ -1,34 +1,33 @@
 #include <iostream>
 #include <string>
-#include <ctime>
-#include <cstdlib>
 #include <vector>
 
-// Declaring global variables to use 
+/// @brief Declaring global variables to use 
 int energy;
 int score;
 std::string currentLocation;
 std::string criminal;
 
-// Vector to store locations
+/// @brief Vector to store locations and suspects
 std::vector<std::string> locations = { "Study Room", "Kitchen", "Garden", "TV Lounge", "Basement" };
 std::vector<std::string> suspects = { "Ali", "Maria", "John" };
 
-// Function to generate a random suspect
+/// @brief Function to generate a random suspect
 void generateSuspect()
 {
-	srand(time(0));
-	criminal = suspects[rand() % suspects.size()];
+	criminal = suspects[utils::getRandomInt(0, suspects.size())];
 }
 
-// Function to initialize the game
+/// @brief Function to initialize the game
 void InitializeGame()
 {
 	energy = 100;
 	score = 0;
 	currentLocation = "Main Hall";
 }
-// Function to move player
+
+/// @brief Function to move player
+/// @param location The location name
 void movement(const std::string location)
 {
 	currentLocation = location;
@@ -37,7 +36,7 @@ void movement(const std::string location)
 		energy = 0;
 }
 
-// Function to give detective the optoion to rest
+/// @brief Function to give detective the optoion to rest
 void rest()
 {
 	int energyGain = 30;
@@ -46,13 +45,14 @@ void rest()
 		energy = 100;
 }
 
-// Function to interrogate the suspects
+/// @brief Function to interrogate the suspects
+/// @param suspect_name The suspect name
 std::string Interrogate(const std::string suspect_name)
 {
 	energy -= 20;
 	if (energy < 0)
 		energy = 0;
-	int reaction = rand() % 4;
+	int reaction = utils::getRandomInt(0, 3);
 	if (reaction == 0)
 	{
 		return suspect_name + " seems nervous.";
@@ -71,13 +71,13 @@ std::string Interrogate(const std::string suspect_name)
 	}
 }
 
-// Function to search for clues
+/// @brief Function to search for clues
 bool searchClues()
 {
 	energy -= 30;
 	if (energy < 0)
 		energy = 0;
-	bool found = rand() % 3;
+	bool found = utils::getRandomInt(0, 2);
 	if (found)
 	{
 		score += 20;
@@ -91,7 +91,8 @@ bool searchClues()
 	}
 }
 
-// Function to accuse the suspect
+/// @brief Function to accuse the suspect
+/// @param accusedName The name of the suspect accused
 bool accusation(const std::string accusedName)
 {
 	if (accusedName == criminal)
