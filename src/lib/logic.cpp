@@ -33,6 +33,17 @@ void movement(const std::string location)
 {
 	currentLocation = location;
 	energy -= 10;
+	if (energy < 0)
+		energy = 0;
+}
+
+// Function to give detective the optoion to rest
+void rest()
+{
+	int energyGain = 30;
+	energy += energyGain;
+	if (energy > 100)
+		energy = 100;
 }
 
 // Function to interrogate the suspects
@@ -55,4 +66,27 @@ std::string Interrogate(const std::string suspect_name)
 	{
 		return suspect_name + "answers your questions confidently and denies everything.";
 	}
+	energy -= 20;
+	if (energy < 0)
+		energy = 0;
+}
+
+// Function to search for clues
+bool searchClues()
+{
+	bool found = rand() % 3;
+	if (found)
+	{
+		score += 20;
+		if (score > 100)
+			score = 100;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+	energy -= 30;
+	if (energy < 0)
+		energy = 0;
 }
