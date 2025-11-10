@@ -2,12 +2,55 @@
 #include <functional>
 #include <vector>
 #include <string>
+#include <sstream>
 #include <iostream>
+#include <random>
+
+#include <SFML/Graphics.hpp>
 
 #include "__macros.hpp"
 
 namespace utils
 {
+    inline int getRandomInt(int minInclusive, int maxInclusive)
+    {
+        static std::random_device rd;
+        static std::mt19937 gen(rd());
+        std::uniform_int_distribution<> distrib(minInclusive, maxInclusive);
+        return distrib(gen);
+    }
+
+    inline float getRandomFloat(float minInclusive, float maxInclusive)
+    {
+        static std::random_device rd;
+        static std::mt19937 gen(rd());
+        std::uniform_real_distribution<float> distrib(minInclusive, maxInclusive);
+        return distrib(gen);
+    }
+
+    inline bool getRandomBool()
+    {
+        return getRandomInt(0, 1);
+    }
+
+    inline float getRandom01()
+    {
+        return getRandomFloat(0, 1);
+    }
+
+    inline sf::Vector2f getRandomVector2f(float magnitude)
+    {
+        return {magnitude * getRandomFloat(0, 1), magnitude * getRandomFloat(0, 1)};
+    }
+
+    inline sf::Vector2i getRandomVector2i(float magnitude)
+    {
+        sf::Vector2f vec = getRandomVector2f(magnitude);
+        return sf::Vector2i(
+            static_cast<int>(vec.x),
+            static_cast<int>(vec.y));
+    }
+
     struct printConfig
     {
         static constexpr bool printLineNum = true;
@@ -54,6 +97,12 @@ namespace utils
                 f(args...);
         }
     };
+}
+
+namespace CONSTANTS
+{
+    /// @brief For Empty Functions etc.
+    constexpr static inline void (*NULLFUNC)() = []() {};
 }
 
 #define PRINT(message) utils::printLine(__FILE_NAME__, __func__, __LINE__, message)

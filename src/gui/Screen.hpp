@@ -12,11 +12,13 @@ namespace engine
     {
     private:
         sf::RenderWindow m_window;
-        UILayout m_ui_layout;
+        UILayout* m_ui_layout = nullptr;
 
     public:
         GameScreen();
         ~GameScreen();
+
+        void ChangeUILayout(UILayout& layout);
 
         void StartLoop();
     };

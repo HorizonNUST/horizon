@@ -1,6 +1,7 @@
 #pragma once
 #include <functional>
 
+#include "utils.hpp"
 #include "UIElement.hpp"
 #include "GameScreenData.hpp"
 
@@ -24,7 +25,7 @@ namespace engine::gui::elements
     class ButtonElement : public UIElement
     {
     public:
-        ButtonElement(const std::string &text, const sf::Vector2f &position, std::function<void()> callback = []() {}, ButtonConfig config = {});
+        ButtonElement(const std::string &text, const sf::Vector2f &position, std::function<void()> callback = CONSTANTS::NULLFUNC, ButtonConfig config = {});
 
         inline void SetText(const std::string &newText);
 

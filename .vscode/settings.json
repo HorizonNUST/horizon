@@ -47,6 +47,7 @@
         "cstdarg": "cpp",
         "execution": "cpp",
         "mutex": "cpp",
-        "streambuf": "cpp"
+        "streambuf": "cpp",
+        "optional": "cpp"
     },
 }

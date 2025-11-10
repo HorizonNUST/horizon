@@ -11,6 +11,11 @@ engine::GameScreen::~GameScreen()
 {
 }
 
+void engine::GameScreen::ChangeUILayout(UILayout &layout)
+{
+    m_ui_layout = &layout;
+}
+
 void engine::GameScreen::StartLoop()
 {
     GameScreenData data;
@@ -27,14 +32,17 @@ void engine::GameScreen::StartLoop()
             else if (event->is<sf::Event::MouseButtonReleased>())
                 data.isClicking = false;
         }
-        
+
         // get data after polling events
         data.mousePos = sf::Mouse::getPosition(m_window);
 
         m_window.clear();
 
-        m_ui_layout.Update(data);
-        m_ui_layout.DrawLayout(m_window);
+        if (m_ui_layout)
+        {
+            m_ui_layout->Update(data);
+            m_ui_layout->DrawLayout(m_window);
+        }
 
         m_window.display();
     }
