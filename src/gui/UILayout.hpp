@@ -10,10 +10,14 @@
 #include "ButtonElement.hpp"
 #include "utils.hpp"
 
+#include "Screen.hpp"
 #include "GameScreenData.hpp"
 
 namespace engine
 {
+    class GameScreen;
+
+    /// @brief To generate a Layout containing `UIElements`
     class UILayout
     {
     private:
@@ -26,7 +30,10 @@ namespace engine
         void AddImageElement(const std::string &imagePath, const sf::Vector2f &position);
         void AddButtonElement(const std::string &text, const sf::Vector2f &position, std::function<void()> callback = CONSTANTS::NULLFUNC, engine::gui::elements::ButtonConfig config = {});
 
-        void Update(const GameScreenData &data);
-        void DrawLayout(sf::RenderWindow &window);
+    private:
+        friend class GameScreen;
+
+        void update(const GameScreenData &data);
+        void drawLayout(sf::RenderWindow &window);
     };
 }

@@ -8,6 +8,9 @@
 
 namespace engine
 {
+    class UILayout;
+
+    /// @brief Main Screen
     class GameScreen
     {
     private:
@@ -18,8 +21,11 @@ namespace engine
         GameScreen();
         ~GameScreen();
 
+        /// @brief To Change `UILayout` to given layout
+        /// @param layout `UILayout&` handle memory yourself
         void ChangeUILayout(UILayout& layout);
 
+        /// @brief To Start the Game Loop
         void StartLoop();
     };
 }

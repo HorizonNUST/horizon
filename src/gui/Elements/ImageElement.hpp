@@ -8,6 +8,8 @@ namespace engine::gui::elements
     public:
         ImageElement(const std::string &imagePath, const sf::Vector2f &position);
 
+        /// @brief Set the image to given url, throws if image not found at path
+        /// @param newPath image path full, in project use relative `assets/image.jpeg`
         inline void setImage(const std::string &newPath);
 
     private:

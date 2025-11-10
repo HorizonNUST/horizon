@@ -8,6 +8,8 @@ namespace engine::gui::elements
     public:
         TextElement(const std::string &text, const sf::Vector2f &position);
 
+        /// @brief Set the text of the Element
+        /// @param newText The New Text
         inline void SetText(const std::string &newText);
 
     private:

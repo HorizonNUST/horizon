@@ -19,7 +19,7 @@ void engine::UILayout::AddButtonElement(const std::string &text, const sf::Vecto
     m_elements.emplace_back(std::make_unique<engine::gui::elements::ButtonElement>(text, position, std::move(callback), config));
 }
 
-void engine::UILayout::Update(const GameScreenData &data)
+void engine::UILayout::update(const GameScreenData &data)
 {
     for (const auto &element : m_elements)
     {
@@ -27,7 +27,7 @@ void engine::UILayout::Update(const GameScreenData &data)
     }
 }
 
-void engine::UILayout::DrawLayout(sf::RenderWindow &window)
+void engine::UILayout::drawLayout(sf::RenderWindow &window)
 {
     for (auto &element : m_elements)
     {

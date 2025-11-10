@@ -12,6 +12,9 @@
 
 namespace utils
 {
+    /// @brief Get Random `int` in given range
+    /// @param minInclusive from Inclusive
+    /// @param maxInclusive to Inclusive
     inline int getRandomInt(int minInclusive, int maxInclusive)
     {
         static std::random_device rd;
@@ -20,6 +23,9 @@ namespace utils
         return distrib(gen);
     }
 
+    /// @brief Get Random `float` in given range
+    /// @param minInclusive from Inclusive
+    /// @param maxInclusive to Inclusive
     inline float getRandomFloat(float minInclusive, float maxInclusive)
     {
         static std::random_device rd;
@@ -28,21 +34,27 @@ namespace utils
         return distrib(gen);
     }
 
+    /// @brief Get Random Bool
     inline bool getRandomBool()
     {
         return getRandomInt(0, 1);
     }
 
+    /// @brief get random float between 0 and 1
     inline float getRandom01()
     {
         return getRandomFloat(0, 1);
     }
 
+    /// @brief Get random sfml `sf::Vector2f` with given magnitude
+    /// @param magnitude the magnitude
     inline sf::Vector2f getRandomVector2f(float magnitude)
     {
         return {magnitude * getRandomFloat(0, 1), magnitude * getRandomFloat(0, 1)};
     }
 
+    /// @brief Get random sfml `sf::Vector2i` with given magnitude
+    /// @param magnitude the magnitude
     inline sf::Vector2i getRandomVector2i(float magnitude)
     {
         sf::Vector2f vec = getRandomVector2f(magnitude);
@@ -63,6 +75,7 @@ namespace utils
         }
     };
 
+    /// @brief ### !Use MACRO `PRINT(message)` or `DEBUG_PRINT(message)`
     inline void printLine(const std::string &fileName, const std::string &functionName, int lineNum, const std::string &message, const std::string &prefix = "")
     {
         using cf = printConfig;
@@ -79,24 +92,6 @@ namespace utils
 
         std::cout << prefix << debugPrefix.str() << message << "\n";
     }
-
-    template <typename... Args>
-    class Event
-    {
-        std::vector<std::function<void(Args...)>> listeners;
-
-    public:
-        void subscribe(std::function<void(Args...)> func)
-        {
-            listeners.push_back(func);
-        }
-
-        void trigger(Args... args)
-        {
-            for (auto &f : listeners)
-                f(args...);
-        }
-    };
 }
 
 namespace CONSTANTS
