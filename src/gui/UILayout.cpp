@@ -2,12 +2,21 @@
 
 engine::UILayout::UILayout()
 {
-    m_elements.emplace_back(std::make_unique<engine::gui::elements::TextElement>("Title", sf::Vector2f{50.f, 30.f}));
-    m_elements.emplace_back(std::make_unique<engine::gui::elements::TextElement>("Subtitle", sf::Vector2f{50.f, 80.f}));
-    m_elements.emplace_back(std::make_unique<engine::gui::elements::ImageElement>("assets/image.jpeg", sf::Vector2f{400.f, 50.f}));
-    m_elements.emplace_back(std::make_unique<engine::gui::elements::ButtonElement>("Press Enter to Start", sf::Vector2f{250.f, 500.f}, []() {
-        PRINT("FROM CALLBACK");
-    }));
+}
+
+void engine::UILayout::AddTextElement(const std::string &text, const sf::Vector2f &position)
+{
+    m_elements.emplace_back(std::make_unique<engine::gui::elements::TextElement>(text, position));
+}
+
+void engine::UILayout::AddImageElement(const std::string &imagePath, const sf::Vector2f &position)
+{
+    m_elements.emplace_back(std::make_unique<engine::gui::elements::ImageElement>(imagePath, position));
+}
+
+void engine::UILayout::AddButtonElement(const std::string &text, const sf::Vector2f &position, std::function<void()> callback, engine::gui::elements::ButtonConfig config)
+{
+    m_elements.emplace_back(std::make_unique<engine::gui::elements::ButtonElement>(text, position, std::move(callback), config));
 }
 
 void engine::UILayout::Update(const GameScreenData &data)
