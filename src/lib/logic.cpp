@@ -91,3 +91,23 @@ bool searchClues()
 	}
 }
 
+// Function to accuse the suspect
+bool accusation(const std::string accusedName)
+{
+	if (accusedName == criminal)
+	{
+		score += 50;
+		return true;
+	}
+	else
+	{
+		energy -= 30;
+		if (energy < 100)
+			energy = 0;
+		score -= 50;
+		if (score < 0)
+			score = 0;
+		return false;
+	}
+}
+
