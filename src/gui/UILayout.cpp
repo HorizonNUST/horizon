@@ -4,19 +4,38 @@ engine::UILayout::UILayout()
 {
 }
 
-void engine::UILayout::AddTextElement(const std::string &text, const sf::Vector2f &position)
+uint16_t engine::UILayout::AddTextElement(const std::string &text, const sf::Vector2f &position)
 {
-    m_elements.emplace_back(std::make_unique<engine::gui::elements::TextElement>(text, position));
+    lastID++;
+    m_elements.emplace_back(std::make_unique<engine::gui::elements::TextElement>(lastID, text, position));
+    return lastID;
 }
 
-void engine::UILayout::AddImageElement(const std::string &imagePath, const sf::Vector2f &position)
+uint16_t engine::UILayout::AddImageElement(const std::string &imagePath, const sf::Vector2f &position)
 {
-    m_elements.emplace_back(std::make_unique<engine::gui::elements::ImageElement>(imagePath, position));
+    lastID++;
+    m_elements.emplace_back(std::make_unique<engine::gui::elements::ImageElement>(lastID, imagePath, position));
+    return lastID;
 }
 
-void engine::UILayout::AddButtonElement(const std::string &text, const sf::Vector2f &position, std::function<void()> callback, engine::gui::elements::ButtonConfig config)
+uint16_t engine::UILayout::AddButtonElement(const std::string &text, const sf::Vector2f &position, std::function<void()> callback, engine::gui::elements::ButtonConfig config)
 {
-    m_elements.emplace_back(std::make_unique<engine::gui::elements::ButtonElement>(text, position, std::move(callback), config));
+    lastID++;
+    m_elements.emplace_back(std::make_unique<engine::gui::elements::ButtonElement>(lastID, text, position, std::move(callback), config));
+    return lastID;
+}
+
+engine::gui::elements::UIElement *engine::UILayout::getElementById(uint16_t id)
+{
+    for (const auto &element : m_elements)
+    {
+        if (element->GetID() == id)
+        {
+            return element.get();
+        }
+    }
+
+    return nullptr;
 }
 
 void engine::UILayout::update(const GameScreenData &data)

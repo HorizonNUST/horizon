@@ -13,6 +13,12 @@ engine::GameScreen::~GameScreen()
 
 void engine::GameScreen::ChangeUILayout(UILayout &layout)
 {
+    if (m_ui_layout)
+        if (layout == *m_ui_layout)
+        {
+            return;
+        }
+
     m_ui_layout = &layout;
 }
 
@@ -40,8 +46,8 @@ void engine::GameScreen::StartLoop()
 
         if (m_ui_layout)
         {
-            m_ui_layout->Update(data);
-            m_ui_layout->DrawLayout(m_window);
+            m_ui_layout->update(data);
+            m_ui_layout->drawLayout(m_window);
         }
 
         m_window.display();

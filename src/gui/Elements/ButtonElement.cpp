@@ -1,9 +1,11 @@
 #include "ButtonElement.hpp"
 #include "utils.hpp"
 
-engine::gui::elements::ButtonElement::ButtonElement(const std::string &text, const sf::Vector2f &position, std::function<void()> callback, ButtonConfig config)
+engine::gui::elements::ButtonElement::ButtonElement(uint16_t id, const std::string &text, const sf::Vector2f &position, std::function<void()> callback, ButtonConfig config)
     : m_callback(callback), m_config(config)
 {
+    setID(id);
+
     if (!m_font.openFromFile("assets/Inter/Inter.ttf"))
     {
         throw("Inter.ttf not found");
@@ -84,6 +86,9 @@ void engine::gui::elements::ButtonElement::SetCallback(std::function<void()> cal
 
 void engine::gui::elements::ButtonElement::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
+    if (IsHidden())
+        return;
+
     target.draw(m_shape, states);
 
     if (m_text)

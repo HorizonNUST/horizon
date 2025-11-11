@@ -6,7 +6,7 @@ namespace engine::gui::elements
     class TextElement : public UIElement
     {
     public:
-        TextElement(const std::string &text, const sf::Vector2f &position);
+        TextElement(uint16_t id, const std::string &text, const sf::Vector2f &position);
 
         /// @brief Set the text of the Element
         /// @param newText The New Text

@@ -6,7 +6,7 @@ namespace engine::gui::elements
     class ImageElement : public UIElement
     {
     public:
-        ImageElement(const std::string &imagePath, const sf::Vector2f &position);
+        ImageElement(uint16_t id, const std::string &imagePath, const sf::Vector2f &position);
 
         /// @brief Set the image to given url, throws if image not found at path
         /// @param newPath image path full, in project use relative `assets/image.jpeg`

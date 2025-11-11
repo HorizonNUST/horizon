@@ -31,7 +31,7 @@ namespace engine::gui::elements
     class ButtonElement : public UIElement
     {
     public:
-        ButtonElement(const std::string &text, const sf::Vector2f &position, std::function<void()> callback = CONSTANTS::NULLFUNC, ButtonConfig config = {});
+        ButtonElement(uint16_t id, const std::string &text, const sf::Vector2f &position, std::function<void()> callback = CONSTANTS::NULLFUNC, ButtonConfig config = {});
 
         /// @brief Set the Text Inside Button
         /// @param newText The New Text String

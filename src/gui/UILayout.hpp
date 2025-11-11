@@ -1,6 +1,7 @@
 #pragma once
 #include <array>
 #include <functional>
+#include <cstdlib>
 
 #include <SFML/Graphics.hpp>
 
@@ -21,16 +22,26 @@ namespace engine
     class UILayout
     {
     private:
+        uint8_t id;
         std::vector<std::unique_ptr<engine::gui::elements::UIElement>> m_elements;
 
     public:
         UILayout();
 
-        void AddTextElement(const std::string &text, const sf::Vector2f &position);
-        void AddImageElement(const std::string &imagePath, const sf::Vector2f &position);
-        void AddButtonElement(const std::string &text, const sf::Vector2f &position, std::function<void()> callback = CONSTANTS::NULLFUNC, engine::gui::elements::ButtonConfig config = {});
+        uint16_t AddTextElement(const std::string &text, const sf::Vector2f &position);
+        uint16_t AddImageElement(const std::string &imagePath, const sf::Vector2f &position);
+        uint16_t AddButtonElement(const std::string &text, const sf::Vector2f &position, std::function<void()> callback = CONSTANTS::NULLFUNC, engine::gui::elements::ButtonConfig config = {});
+
+        engine::gui::elements::UIElement* getElementById(uint16_t id);
+
+        bool operator==(const UILayout &other) const
+        {
+            return id == other.id;
+        }
 
     private:
+        uint16_t lastID = 0;
+
         friend class GameScreen;
 
         void update(const GameScreenData &data);

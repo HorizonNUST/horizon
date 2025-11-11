@@ -1,7 +1,9 @@
 #include "ImageElement.hpp"
 
-engine::gui::elements::ImageElement::ImageElement(const std::string &imagePath, const sf::Vector2f &position)
+engine::gui::elements::ImageElement::ImageElement(uint16_t id, const std::string &imagePath, const sf::Vector2f &position)
 {
+    setID(id);
+    
     if (!m_texture.loadFromFile(imagePath))
     {
         throw("Texture Not found at:" + imagePath);
@@ -23,6 +25,9 @@ inline void engine::gui::elements::ImageElement::setImage(const std::string &new
 
 void engine::gui::elements::ImageElement::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
+    if (IsHidden())
+        return;
+
     if (m_sprite)
         target.draw(*m_sprite, states);
 }

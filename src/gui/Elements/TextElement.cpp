@@ -1,8 +1,10 @@
 #include "TextElement.hpp"
 
-engine::gui::elements::TextElement::TextElement(const std::string &text, const sf::Vector2f &position)
+engine::gui::elements::TextElement::TextElement(uint16_t id, const std::string &text, const sf::Vector2f &position)
     : m_position(position)
 {
+    setID(id);
+
     if (!m_font.openFromFile("assets/Inter/Inter.ttf"))
     {
         throw("Inter.ttf not found");
@@ -22,6 +24,9 @@ inline void engine::gui::elements::TextElement::SetText(const std::string &newTe
 
 void engine::gui::elements::TextElement::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
+    if (IsHidden())
+        return;
+
     if (m_text)
         target.draw(*m_text, states);
 }
