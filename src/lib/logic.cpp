@@ -14,18 +14,18 @@ std::string criminal;
 std::vector<std::string> locations = { "Study Room", "Kitchen", "Garden", "TV Lounge", "Basement" };
 std::vector<std::string> suspects = { "Ali", "Maria", "John" };
 
-/// @brief Function to generate a random suspect
-void generateSuspect()
-{
-	criminal = suspects[utils::getRandomInt(0, suspects.size())];
-}
-
 /// @brief Function to initialize the game
-void InitializeGame()
+void initializeGame()
 {
 	energy = 100;
 	score = 0;
 	currentLocation = "Main Hall";
+}
+
+/// @brief Function to generate a random suspect
+void generateCriminal()
+{
+	criminal = suspects[utils::getRandomInt(0, suspects.size())];
 }
 
 /// @brief Function to move player
