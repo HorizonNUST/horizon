@@ -48,6 +48,8 @@
         "execution": "cpp",
         "mutex": "cpp",
         "streambuf": "cpp",
-        "optional": "cpp"
+        "optional": "cpp",
+        "thread": "cpp",
+        "istream": "cpp"
     },
 }
