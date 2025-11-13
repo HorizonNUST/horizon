@@ -98,6 +98,8 @@ namespace CONSTANTS
 {
     /// @brief For Empty Functions etc.
     constexpr static inline void (*NULLFUNC)() = []() {};
+
+    constexpr static inline sf::Vector2f ZERO_VECTOR2F = {0.f, 0.f};
 }
 
 #define PRINT(message) utils::printLine(__FILE_NAME__, __func__, __LINE__, message)

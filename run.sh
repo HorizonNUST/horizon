@@ -20,6 +20,24 @@ if [[ "$1" == "--release" ]]; then
 fi
 # parsing arguments end
 
+# detect platform
+echo -e "${CYAN}Detecting platform...${RESET}"
+
+PLATFORM="unknown"
+
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    PLATFORM="linux"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    PLATFORM="macos"
+elif [[ "$OSTYPE" == "msys"* || "$OSTYPE" == "cygwin"* || "$OSTYPE" == "win"* ]]; then
+    PLATFORM="windows"
+else
+    echo -e "${RED}Unsupported OS type: $OSTYPE${RESET}"
+    exit 1
+fi
+
+echo -e "${GREEN}Detected platform: ${PURPLE}$PLATFORM${RESET}"
+
 clear
 clear
 clear

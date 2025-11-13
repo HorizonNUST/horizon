@@ -1,6 +1,6 @@
 #include "TextElement.hpp"
 
-engine::gui::elements::TextElement::TextElement(uint16_t id, const std::string &text, const sf::Vector2f &position)
+engine::gui::elements::TextElement::TextElement(uint16_t id, const std::string &text, const sf::Vector2f &position, const sf::Vector2f &size)
     : m_position(position)
 {
     setID(id);

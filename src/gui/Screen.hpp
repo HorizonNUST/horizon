@@ -15,7 +15,8 @@ namespace engine
     {
     private:
         sf::RenderWindow m_window;
-        UILayout* m_ui_layout = nullptr;
+        UILayout *m_ui_layout = nullptr;
+        GameScreenData m_data;
 
     public:
         GameScreen();
@@ -23,7 +24,7 @@ namespace engine
 
         /// @brief To Change `UILayout` to given layout
         /// @param layout `UILayout&` handle memory yourself
-        void ChangeUILayout(UILayout& layout);
+        void ChangeUILayout(UILayout &layout);
 
         /// @brief To Start the Game Loop
         void StartLoop();

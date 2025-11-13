@@ -1,6 +1,7 @@
 #include "Screen.hpp"
 
 #include "GameScreenData.hpp"
+#include "utils.hpp"
 
 engine::GameScreen::GameScreen()
 {
@@ -16,16 +17,16 @@ void engine::GameScreen::ChangeUILayout(UILayout &layout)
     if (m_ui_layout)
         if (layout == *m_ui_layout)
         {
+            DEBUG_PRINT("SAME LAYOUT");
             return;
         }
 
+    m_data.isClicking = false;
     m_ui_layout = &layout;
 }
 
 void engine::GameScreen::StartLoop()
 {
-    GameScreenData data;
-
     while (m_window.isOpen())
     {
         // poll all events
@@ -34,19 +35,19 @@ void engine::GameScreen::StartLoop()
             if (event->is<sf::Event::Closed>())
                 m_window.close();
             else if (event->is<sf::Event::MouseButtonPressed>())
-                data.isClicking = true;
+                m_data.isClicking = true;
             else if (event->is<sf::Event::MouseButtonReleased>())
-                data.isClicking = false;
+                m_data.isClicking = false;
         }
 
-        // get data after polling events
-        data.mousePos = sf::Mouse::getPosition(m_window);
+        // get m_data after polling events
+        m_data.mousePos = sf::Mouse::getPosition(m_window);
 
         m_window.clear();
 
         if (m_ui_layout)
         {
-            m_ui_layout->update(data);
+            m_ui_layout->update(m_data);
             m_ui_layout->drawLayout(m_window);
         }
 

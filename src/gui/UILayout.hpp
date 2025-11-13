@@ -2,6 +2,7 @@
 #include <array>
 #include <functional>
 #include <cstdlib>
+#include <iostream>
 
 #include <SFML/Graphics.hpp>
 
@@ -22,13 +23,13 @@ namespace engine
     class UILayout
     {
     private:
-        uint8_t id;
+        uint8_t m_id;
         std::vector<std::unique_ptr<engine::gui::elements::UIElement>> m_elements;
 
     public:
-        UILayout();
+        UILayout(uint16_t id);
 
-        uint16_t AddTextElement(const std::string &text, const sf::Vector2f &position);
+        uint16_t AddTextElement(const std::string &text, const sf::Vector2f &position, const sf::Vector2f& size = CONSTANTS::ZERO_VECTOR2F);
         uint16_t AddImageElement(const std::string &imagePath, const sf::Vector2f &position);
         uint16_t AddButtonElement(const std::string &text, const sf::Vector2f &position, std::function<void()> callback = CONSTANTS::NULLFUNC, engine::gui::elements::ButtonConfig config = {});
 
@@ -36,7 +37,7 @@ namespace engine
 
         bool operator==(const UILayout &other) const
         {
-            return id == other.id;
+            return m_id == other.m_id;
         }
 
     private:

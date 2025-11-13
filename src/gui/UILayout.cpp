@@ -1,13 +1,13 @@
 #include "UILayout.hpp"
 
-engine::UILayout::UILayout()
+engine::UILayout::UILayout(uint16_t id) : m_id(id)
 {
 }
 
-uint16_t engine::UILayout::AddTextElement(const std::string &text, const sf::Vector2f &position)
+uint16_t engine::UILayout::AddTextElement(const std::string &text, const sf::Vector2f &position, const sf::Vector2f &size)
 {
     lastID++;
-    m_elements.emplace_back(std::make_unique<engine::gui::elements::TextElement>(lastID, text, position));
+    m_elements.emplace_back(std::make_unique<engine::gui::elements::TextElement>(lastID, text, position, size));
     return lastID;
 }
 

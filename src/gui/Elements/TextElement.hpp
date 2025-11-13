@@ -1,12 +1,14 @@
 #pragma once
 #include "UIElement.hpp"
 
+#include "utils.hpp"
+
 namespace engine::gui::elements
 {
     class TextElement : public UIElement
     {
     public:
-        TextElement(uint16_t id, const std::string &text, const sf::Vector2f &position);
+        TextElement(uint16_t id, const std::string &text, const sf::Vector2f &position, const sf::Vector2f &size = CONSTANTS::ZERO_VECTOR2F);
 
         /// @brief Set the text of the Element
         /// @param newText The New Text
