@@ -102,10 +102,16 @@ namespace CONSTANTS
     constexpr static inline sf::Vector2f ZERO_VECTOR2F = {0.f, 0.f};
 }
 
-#define PRINT(message) utils::printLine(__FILE_NAME__, __func__, __LINE__, message)
+inline std::string file_name(const char* path) {
+    return std::filesystem::path(path).filename().string();
+}
+
+#define PRINT(message) \
+    utils::printLine(file_name(__FILE__).c_str(), __func__, __LINE__, message)
 
 #if DEBUG == 1
-#define DEBUG_PRINT(message) utils::printLine(__FILE_NAME__, __func__, __LINE__, message, "* ")
+#define DEBUG_PRINT(message) \
+    utils::printLine(file_name(__FILE__).c_str(), __func__, __LINE__, message, "* ")
 #else
 #define DEBUG_PRINT(message)
 #endif

@@ -50,6 +50,7 @@
         "streambuf": "cpp",
         "optional": "cpp",
         "thread": "cpp",
-        "istream": "cpp"
+        "istream": "cpp",
+        "system_error": "cpp"
     },
 }

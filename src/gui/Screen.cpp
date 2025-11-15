@@ -54,3 +54,15 @@ void engine::GameScreen::StartLoop()
         m_window.display();
     }
 }
+void engine::GameScreen::setBackgroundMusic(const std::string& path){
+    backgroundMusic.setLoop(true);
+    backgroundMusic.setVolume(50.f); // 0 - 100
+    backgroundMusic.play();
+    std::cout << "Background music started: " << path << "\n";
+}
+void engine::GameScreen::playAudioOneTime(std::string path){
+    sound.setBuffer(soundBuffer);
+    sound.setVolume(80.f); // 0 - 100
+    sound.play();
+    std::cout << "Playing sound once: " << path << "\n";
+}

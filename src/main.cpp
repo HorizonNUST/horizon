@@ -61,5 +61,9 @@ UILayout setupLayoutB(GameScreen &screen, UILayout &layoutA)
         screen.ChangeUILayout(layoutA);
     });
 
+    screen.setBackgroundMusic("assets/audio/bg_music.ogg");
+    screen.playAudioOneTime("assets/audio/click.wav");
+
+
     return layoutB;
 }

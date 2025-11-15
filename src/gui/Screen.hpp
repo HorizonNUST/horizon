@@ -6,6 +6,8 @@
 
 #include "UILayout.hpp"
 
+#include <SFML/Audio.hpp>
+
 namespace engine
 {
     class UILayout;
@@ -18,6 +20,11 @@ namespace engine
         UILayout *m_ui_layout = nullptr;
         GameScreenData m_data;
 
+        //music/sound
+        sf::Music backgroundMusic;   // for long background track
+        sf::SoundBuffer soundBuffer; // for short sound
+        sf::Sound sound;
+
     public:
         GameScreen();
         ~GameScreen();
@@ -28,5 +35,8 @@ namespace engine
 
         /// @brief To Start the Game Loop
         void StartLoop();
+
+        void setBackgroundMusic(const std::string& path);
+        void playAudioOneTime(std::string path);
     };
 }
