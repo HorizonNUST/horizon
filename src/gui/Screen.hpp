@@ -26,10 +26,13 @@ namespace engine
         sf::Sound sound;
 
         // Layouts
-        UILayout* firstLayout = nullptr;
-        UILayout* secondLayout = nullptr;
-        UILayout* thirdLayout = nullptr;
+        UILayout* mainmenu = nullptr;
+        UILayout* room1 = nullptr;
+        UILayout* room2 = nullptr;
+        UILayout* room3 = nullptr;
+        UILayout* accuseSuspect = nullptr;
 
+        std::string correctSuspect = "Suspect A";
 
     public:
         GameScreen();
