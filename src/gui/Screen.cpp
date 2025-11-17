@@ -8,6 +8,9 @@ engine::GameScreen::GameScreen()
 {
     m_window = sf::RenderWindow(sf::VideoMode({800u, 600u}), "Horizon", sf::Style::Titlebar | sf::Style::Close);
 
+    setBackgroundMusic("assets/Sound/background.mp3");
+
+    // Layouts
     firstLayout = new UILayout(1);
     secondLayout = new UILayout(2);
     thirdLayout = new UILayout(3);
@@ -34,9 +37,9 @@ engine::GameScreen::GameScreen()
         playAudioOneTime("assets/Sound/button.mp3");
     });
 
-    ChangeUILayout(*firstLayout);
+    thirdLayout->AddImageElement("assets/image.jpeg", {200.f, 100.f});
 
-    setBackgroundMusic("assets/Sound/background.mp3");
+    ChangeUILayout(*firstLayout);
 }
 
 engine::GameScreen::~GameScreen()

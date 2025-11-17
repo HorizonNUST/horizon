@@ -25,6 +25,7 @@ namespace engine
         sf::SoundBuffer soundBuffer; // for short sound
         sf::Sound sound;
 
+        // Layouts
         UILayout* firstLayout = nullptr;
         UILayout* secondLayout = nullptr;
         UILayout* thirdLayout = nullptr;
