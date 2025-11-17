@@ -90,12 +90,14 @@ engine::GameScreen::GameScreen()
     auto resultText = accuseSuspect->AddTextElement("", {40.f, 260.f});
     accuseSuspect->getElementById(resultText)->SetHidden(false);
 
-    auto accuse = [&](std::string name) {
-        if (name == correctSuspect)
-            accuseSuspect->getElementById(resultText)->SetText("Correct, Bravo! " + name + " is the culprit.");
-        else
-            accuseSuspect->getElementById(resultText)->SetText("You are Wrongly accusing innocent " + name);
-        playAudioOneTime("assets/Sound/button.mp3");
+    auto accuse = [&, resultText](std::string name) {
+        auto* resultElement = dynamic_cast<engine::gui::elements::TextElement*>(accuseSuspect->getElementById(resultText));
+        if (resultElement) {
+            if (name == correctSuspect)
+                resultElement->SetText("Correct, Bravo! " + name + " is the culprit.");
+            else
+                resultElement->SetText("You are Wrongly accusing innocent " + name);
+        }
     };
 
     accuseSuspect->AddButtonElement("Suspect A", {20.f, 20.f}, [=]() { accuse("Mujtaba"); });
@@ -130,9 +132,11 @@ engine::GameScreen::GameScreen()
 
 engine::GameScreen::~GameScreen()
 {
-    delete firstLayout;
-    delete secondLayout;
-    delete thirdLayout;
+    delete mainmenu;
+    delete room1;
+    delete room2;
+    delete room3;
+    delete accuseSuspect;
 }
 
 void engine::GameScreen::ChangeUILayout(UILayout &layout)

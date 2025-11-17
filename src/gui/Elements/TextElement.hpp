@@ -12,7 +12,7 @@ namespace engine::gui::elements
 
         /// @brief Set the text of the Element
         /// @param newText The New Text
-        inline void SetText(const std::string &newText);
+        void SetText(const std::string &newText);
 
     private:
         sf::Font m_font;
