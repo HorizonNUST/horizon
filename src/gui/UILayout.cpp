@@ -27,7 +27,7 @@ uint16_t engine::UILayout::AddButtonElement(const std::string &text, const sf::V
 
 engine::gui::elements::UIElement *engine::UILayout::getElementById(uint16_t id)
 {
-    for (const auto &element : m_elements)
+    for (const std::unique_ptr<engine::gui::elements::UIElement> &element : m_elements)
     {
         if (element->GetID() == id)
         {
