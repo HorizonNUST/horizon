@@ -1,6 +1,6 @@
 # Horizon
 
-A basic detective game in C++.
+A detective game using SFML GUI in C++. Uses Object Oriented Programming principles.
 
 ## How to Run
 
