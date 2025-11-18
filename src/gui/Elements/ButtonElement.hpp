@@ -4,6 +4,7 @@
 #include "utils.hpp"
 #include "UIElement.hpp"
 #include "GameScreenData.hpp"
+#include "BitmapTextRenderer.hpp"
 
 namespace engine::gui::elements
 {
@@ -13,19 +14,16 @@ namespace engine::gui::elements
         /// @brief Padding around the Text
         sf::Vector2f padding = {16.f, 8.f};
 
-        /// @brief Color of the button backgorund
+        /// @brief Color of the button background
         sf::Color fillColor = sf::Color::Black;
         float outlineThickness = 2.f;
         sf::Color outlineColor = sf::Color::White;
 
         sf::Color fontColor = sf::Color::White;
-        unsigned int fontSize = 20;
-        /// @brief input `sf::Text::Style::`
-        sf::Text::Style fontStyle = sf::Text::Style::Regular;
-        /// @brief input `sf::Text::Style::`
-        sf::Text::Style fontHoverStyle = sf::Text::Style::Underlined;
-        /// @brief input `sf::Text::Style::`
-        sf::Text::Style fontClickStyle = sf::Text::Style::Italic;
+        sf::Color fontHoverColor = sf::Color::Yellow;
+        sf::Color fontClickColor = sf::Color::Red;
+
+        float charSpacing = 0.f;
     };
 
     class ButtonElement : public UIElement
@@ -35,7 +33,7 @@ namespace engine::gui::elements
 
         /// @brief Set the Text Inside Button
         /// @param newText The New Text String
-        inline void SetText(const std::string &newText);
+        void SetText(const std::string &newText);
 
         void Update(const GameScreenData &data) override;
 
@@ -46,8 +44,7 @@ namespace engine::gui::elements
     private:
         ButtonConfig m_config;
 
-        sf::Font m_font;
-        std::optional<sf::Text> m_text;
+        BitmapTextRenderer m_textRenderer;
         sf::RectangleShape m_shape;
 
         bool m_pressedThisFrame = false;
