@@ -2,6 +2,8 @@
 #include <functional>
 
 #include "utils.hpp"
+#include "constants.hpp"
+
 #include "UIElement.hpp"
 #include "GameScreenData.hpp"
 
@@ -19,13 +21,16 @@ namespace engine::gui::elements
         sf::Color outlineColor = sf::Color::White;
 
         sf::Color fontColor = sf::Color::White;
-        unsigned int fontSize = 20;
+        unsigned int fontSize = 16;
         /// @brief input `sf::Text::Style::`
         sf::Text::Style fontStyle = sf::Text::Style::Regular;
         /// @brief input `sf::Text::Style::`
         sf::Text::Style fontHoverStyle = sf::Text::Style::Underlined;
         /// @brief input `sf::Text::Style::`
         sf::Text::Style fontClickStyle = sf::Text::Style::Italic;
+
+        /// @brief Line height multiplier (1.0 = normal, 1.5 = 1.5x spacing, etc.)
+        float lineHeight = 2.f;
     };
 
     class ButtonElement : public UIElement

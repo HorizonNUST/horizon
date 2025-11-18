@@ -29,7 +29,7 @@ namespace engine
     public:
         UILayout(uint16_t id);
 
-        uint16_t AddTextElement(const std::string &text, const sf::Vector2f &position, const sf::Vector2f& size = CONSTANTS::ZERO_VECTOR2F);
+        uint16_t AddTextElement(const std::string &text, const sf::Vector2f &position);
         uint16_t AddImageElement(const std::string &imagePath, const sf::Vector2f &position);
         uint16_t AddButtonElement(const std::string &text, const sf::Vector2f &position, std::function<void()> callback = CONSTANTS::NULLFUNC, engine::gui::elements::ButtonConfig config = {});
 

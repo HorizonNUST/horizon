@@ -6,9 +6,9 @@ engine::gui::elements::ButtonElement::ButtonElement(uint16_t id, const std::stri
 {
     setID(id);
 
-    if (!m_font.openFromFile("assets/Inter/Inter.ttf"))
+    if (!m_font.openFromFile(CONSTANTS::FONT_PATH))
     {
-        throw("Inter.ttf not found");
+        throw std::runtime_error("Font not found");
     }
 
     m_shape.setFillColor(config.fillColor);
@@ -19,6 +19,7 @@ engine::gui::elements::ButtonElement::ButtonElement(uint16_t id, const std::stri
     m_text->setString(text);
     m_text->setCharacterSize(config.fontSize);
     m_text->setFillColor(config.fontColor);
+    m_text->setLineSpacing(config.lineHeight);
 
     sf::FloatRect textBounds = m_text->getLocalBounds();
 

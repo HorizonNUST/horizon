@@ -94,14 +94,6 @@ namespace utils
     }
 }
 
-namespace CONSTANTS
-{
-    /// @brief For Empty Functions etc.
-    constexpr static inline void (*NULLFUNC)() = []() {};
-
-    constexpr static inline sf::Vector2f ZERO_VECTOR2F = {0.f, 0.f};
-}
-
 inline std::string file_name(const char* path) {
     return std::filesystem::path(path).filename().string();
 }
