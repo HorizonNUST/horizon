@@ -49,11 +49,6 @@ namespace engine
         UILayout *tvLoungeLayout = nullptr;
         UILayout *gardenLayout = nullptr;
 
-        // Interrogate Suspect Layouts
-        UILayout *mujtabaLayout = nullptr;
-        UILayout *azhanLayout = nullptr;
-        UILayout *sheharyarLayout = nullptr;
-
         // Text Element IDs
         uint16_t clueInvestigateLayoutTextId;
         uint16_t responseInterrogateTextId;

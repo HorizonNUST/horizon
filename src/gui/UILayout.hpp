@@ -36,7 +36,7 @@ namespace engine
         void ClearLayout();
         void DisableAllButtons();
 
-        engine::gui::elements::UIElement* getElementById(uint16_t id);
+        engine::gui::elements::UIElement* GetElementById(uint16_t id);
 
         bool operator==(const UILayout &other) const
         {

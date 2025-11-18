@@ -43,7 +43,7 @@ void engine::UILayout::DisableAllButtons()
     }
 }
 
-engine::gui::elements::UIElement *engine::UILayout::getElementById(uint16_t id)
+engine::gui::elements::UIElement *engine::UILayout::GetElementById(uint16_t id)
 {
     for (const std::unique_ptr<engine::gui::elements::UIElement> &element : m_elements)
     {

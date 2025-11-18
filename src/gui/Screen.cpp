@@ -22,10 +22,6 @@ engine::GameScreen::GameScreen()
     tvLoungeLayout = new UILayout(12);
     gardenLayout = new UILayout(13);
 
-    mujtabaLayout = new UILayout(20);
-    azhanLayout = new UILayout(21);
-    sheharyarLayout = new UILayout(22);
-
     createMainMenuLayout();
     createInvestigateLocationLayout();
     createInterrogateSuspectLayout();
@@ -48,10 +44,6 @@ engine::GameScreen::~GameScreen()
     delete basementLayout;
     delete tvLoungeLayout;
     delete gardenLayout;
-
-    delete mujtabaLayout;
-    delete azhanLayout;
-    delete sheharyarLayout;
 }
 
 void engine::GameScreen::createMainMenuLayout()
