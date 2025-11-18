@@ -48,6 +48,23 @@ namespace engine
         UILayout *tvLoungeLayout = nullptr;
         UILayout *gardenLayout = nullptr;
 
+        // Interrogate Suspect Layouts
+        UILayout *mujtabaLayout = nullptr;
+        UILayout *azhanLayout = nullptr;
+        UILayout *sheharyarLayout = nullptr;
+
+        // Text Element IDs
+        uint16_t clueInvestigateLayoutTextId;
+        uint16_t responseInterrogateTextId;
+        uint16_t accuseMakeAccusationTextId;
+        uint16_t noEvidenceMainMenuTextId;
+
+        // Back Buttons IDs
+        uint16_t backInvestigateLocationButtonId;
+        uint16_t backInterrogateSuspectButtonId;
+        uint16_t backViewEvidenceButtonId;
+        uint16_t backMakeAccusationButtonId;
+
         void createMainMenuLayout();
         void createInvestigateLocationLayout();
         void createInterrogateSuspectLayout();
@@ -55,8 +72,6 @@ namespace engine
         void createMakeAccusationLayout();
 
         void addEvidenceItem(const std::string &item);
-
-        void switchLayout(UILayout &layout);
 
     public:
         GameScreen();

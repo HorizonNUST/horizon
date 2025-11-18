@@ -22,6 +22,10 @@ engine::GameScreen::GameScreen()
     tvLoungeLayout = new UILayout(12);
     gardenLayout = new UILayout(13);
 
+    mujtabaLayout = new UILayout(20);
+    azhanLayout = new UILayout(21);
+    sheharyarLayout = new UILayout(22);
+
     createMainMenuLayout();
     createInvestigateLocationLayout();
     createInterrogateSuspectLayout();
@@ -29,6 +33,7 @@ engine::GameScreen::GameScreen()
     // createViewEvidenceLayout()
     createMakeAccusationLayout();
 
+    createMainMenuLayout();
     ChangeUILayout(*mainMenuLayout);
 }
 engine::GameScreen::~GameScreen()
@@ -43,6 +48,10 @@ engine::GameScreen::~GameScreen()
     delete basementLayout;
     delete tvLoungeLayout;
     delete gardenLayout;
+
+    delete mujtabaLayout;
+    delete azhanLayout;
+    delete sheharyarLayout;
 }
 
 void engine::GameScreen::createMainMenuLayout()
@@ -55,37 +64,34 @@ void engine::GameScreen::createMainMenuLayout()
 
     mainMenuLayout->AddButtonElement("Investigate Location", {startPos.x, startPos.y}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
-        switchLayout(*investigateLocationLayout);
-        createInvestigateLocationLayout();
+        ChangeUILayout(*investigateLocationLayout);
     });
 
     mainMenuLayout->AddButtonElement("Interrogate Suspect", {startPos.x, startPos.y + offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
-        switchLayout(*interrogateSuspectLayout);
-        createInterrogateSuspectLayout();
+        ChangeUILayout(*interrogateSuspectLayout);
     });
 
     mainMenuLayout->AddButtonElement("View Evidence", {startPos.x, startPos.y + 2 * offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
-        switchLayout(*viewEvidenceLayout);
+        ChangeUILayout(*viewEvidenceLayout);
         createViewEvidenceLayout();
     });
 
-    uint16_t noEvidenceTextId = mainMenuLayout->AddTextElement("No evidence collected yet.", {350.f, 7.5f + startPos.y + 3 * offsetY});
-    mainMenuLayout->getElementById(noEvidenceTextId)->SetHidden(true);
+    noEvidenceMainMenuTextId = mainMenuLayout->AddTextElement("No evidence collected yet.", {350.f, 7.5f + startPos.y + 3 * offsetY});
+    mainMenuLayout->getElementById(noEvidenceMainMenuTextId)->SetHidden(true);
 
-    mainMenuLayout->AddButtonElement("Make Accusation", {startPos.x, startPos.y + 3 * offsetY}, [this, noEvidenceTextId]() { //
+    mainMenuLayout->AddButtonElement("Make Accusation", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
 
         if (collectedEvidence[0].empty())
         {
             // No evidence collected yet
-            mainMenuLayout->getElementById(noEvidenceTextId)->SetHidden(false);
+            mainMenuLayout->getElementById(noEvidenceMainMenuTextId)->SetHidden(false);
             return;
         }
 
-        switchLayout(*makeAccusationLayout);
-        createMakeAccusationLayout();
+        ChangeUILayout(*makeAccusationLayout);
     });
 
     mainMenuLayout->AddButtonElement("Exit Game", {startPos.x, startPos.y + 4 * offsetY}, [this]() { //
@@ -101,53 +107,54 @@ void engine::GameScreen::createInvestigateLocationLayout()
 
     investigateLocationLayout->AddTextElement("Where do you want to investigate?", {50.f, 75.f});
 
-    uint16_t clueTextId = investigateLocationLayout->AddTextElement("-", {300.f, 150.f});
-    investigateLocationLayout->getElementById(clueTextId)->SetHidden(true);
+    clueInvestigateLayoutTextId = investigateLocationLayout->AddTextElement("-", {300.f, 150.f});
+    investigateLocationLayout->getElementById(clueInvestigateLayoutTextId)->SetHidden(true);
 
-    investigateLocationLayout->AddButtonElement("Kitchen", {startPos.x, startPos.y}, [this, clueTextId]() { //
+    // BACK BUTTON
+
+    backInvestigateLocationButtonId = investigateLocationLayout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 4 * offsetY}, [this]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+        ChangeUILayout(*mainMenuLayout);
+    });
+
+    investigateLocationLayout->AddButtonElement("Kitchen", {startPos.x, startPos.y}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
 
         addEvidenceItem("Found a knife in the Kitchen!");
 
-        auto elem = dynamic_cast<gui::elements::TextElement *>(investigateLocationLayout->getElementById(clueTextId));
+        auto elem = dynamic_cast<gui::elements::TextElement *>(investigateLocationLayout->getElementById(clueInvestigateLayoutTextId));
         elem->SetText("Found a bloody knife\nin the Kitchen!");
         elem->SetHidden(false);
     });
 
-    investigateLocationLayout->AddButtonElement("Basement", {startPos.x, startPos.y + offsetY}, [this, clueTextId]() { //
+    investigateLocationLayout->AddButtonElement("Basement", {startPos.x, startPos.y + offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
 
         addEvidenceItem("Found a mysterious footprint in the Basement!");
 
-        auto elem = dynamic_cast<gui::elements::TextElement *>(investigateLocationLayout->getElementById(clueTextId));
+        auto elem = dynamic_cast<gui::elements::TextElement *>(investigateLocationLayout->getElementById(clueInvestigateLayoutTextId));
         elem->SetText("Found a mysterious footprint\nin the Basement!");
         elem->SetHidden(false);
     });
 
-    investigateLocationLayout->AddButtonElement("TV Lounge", {startPos.x, startPos.y + 2 * offsetY}, [this, clueTextId]() { //
+    investigateLocationLayout->AddButtonElement("TV Lounge", {startPos.x, startPos.y + 2 * offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
 
         addEvidenceItem("Found a broken TV remote in the TV Lounge!");
 
-        auto elem = dynamic_cast<gui::elements::TextElement *>(investigateLocationLayout->getElementById(clueTextId));
+        auto elem = dynamic_cast<gui::elements::TextElement *>(investigateLocationLayout->getElementById(clueInvestigateLayoutTextId));
         elem->SetText("Found a broken TV remote\nin the TV Lounge!");
         elem->SetHidden(false);
     });
 
-    investigateLocationLayout->AddButtonElement("Garden", {startPos.x, startPos.y + 3 * offsetY}, [this, clueTextId]() { //
+    investigateLocationLayout->AddButtonElement("Garden", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
 
         addEvidenceItem("Found a strange footprint in the Garden!");
 
-        auto elem = dynamic_cast<gui::elements::TextElement *>(investigateLocationLayout->getElementById(clueTextId));
+        auto elem = dynamic_cast<gui::elements::TextElement *>(investigateLocationLayout->getElementById(clueInvestigateLayoutTextId));
         elem->SetText("Found a strange footprint\nin the Garden!");
         elem->SetHidden(false);
-    });
-
-    investigateLocationLayout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 4 * offsetY}, [this]() { //
-        playAudioOneTime("assets/Sound/button.mp3");
-        switchLayout(*mainMenuLayout);
-        createMainMenuLayout();
     });
 }
 
@@ -158,43 +165,43 @@ void engine::GameScreen::createInterrogateSuspectLayout()
 
     interrogateSuspectLayout->AddTextElement("Who do you want to interrogate?", {50.f, 75.f});
 
-    uint16_t responseTextId = interrogateSuspectLayout->AddTextElement("-", {300.f, 150.f});
-    interrogateSuspectLayout->getElementById(responseTextId)->SetHidden(true);
+    responseInterrogateTextId = interrogateSuspectLayout->AddTextElement("-", {300.f, 150.f});
+    interrogateSuspectLayout->getElementById(responseInterrogateTextId)->SetHidden(true);
 
-    interrogateSuspectLayout->AddButtonElement("Mujtaba", {startPos.x, startPos.y}, [this, responseTextId]() { //
+    // BACK BUTTON
+    backInterrogateSuspectButtonId = interrogateSuspectLayout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+        ChangeUILayout(*mainMenuLayout);
+    });
+
+    interrogateSuspectLayout->AddButtonElement("Mujtaba", {startPos.x, startPos.y}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
 
         addEvidenceItem("Mujtaba was in the kitchen!");
 
-        auto elem = dynamic_cast<gui::elements::TextElement *>(interrogateSuspectLayout->getElementById(responseTextId));
+        auto elem = dynamic_cast<gui::elements::TextElement *>(interrogateSuspectLayout->getElementById(responseInterrogateTextId));
         elem->SetText("Mujtaba: I was in the kitchen\nlooking for a snack.");
         elem->SetHidden(false);
     });
 
-    interrogateSuspectLayout->AddButtonElement("Azhan", {startPos.x, startPos.y + offsetY}, [this, responseTextId]() { //
+    interrogateSuspectLayout->AddButtonElement("Azhan", {startPos.x, startPos.y + offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
 
         addEvidenceItem("Azhan was in the basement!");
 
-        auto elem = dynamic_cast<gui::elements::TextElement *>(interrogateSuspectLayout->getElementById(responseTextId));
+        auto elem = dynamic_cast<gui::elements::TextElement *>(interrogateSuspectLayout->getElementById(responseInterrogateTextId));
         elem->SetText("Azhan: I was in the basement\nchecking the boiler.");
         elem->SetHidden(false);
     });
 
-    interrogateSuspectLayout->AddButtonElement("Sheharyar", {startPos.x, startPos.y + 2 * offsetY}, [this, responseTextId]() { //
+    interrogateSuspectLayout->AddButtonElement("Sheharyar", {startPos.x, startPos.y + 2 * offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
 
         addEvidenceItem("Sheharyar was in the TV lounge!");
 
-        auto elem = dynamic_cast<gui::elements::TextElement *>(interrogateSuspectLayout->getElementById(responseTextId));
+        auto elem = dynamic_cast<gui::elements::TextElement *>(interrogateSuspectLayout->getElementById(responseInterrogateTextId));
         elem->SetText("Sheharyar: I was in the TV\nlounge watching my favorite\nshow.");
         elem->SetHidden(false);
-    });
-
-    interrogateSuspectLayout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
-        playAudioOneTime("assets/Sound/button.mp3");
-        switchLayout(*mainMenuLayout);
-        createMainMenuLayout();
     });
 }
 
@@ -206,6 +213,12 @@ void engine::GameScreen::createViewEvidenceLayout()
 
     viewEvidenceLayout->AddTextElement("Collected Evidence:", {50.f, 75.f});
 
+    // BACK BUTTON
+    backViewEvidenceButtonId = viewEvidenceLayout->AddButtonElement("Back to Main Menu", lastButtonPos, [this]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+        ChangeUILayout(*mainMenuLayout);
+    });
+
     int index = 0;
 
     for (const std::string &evidence : collectedEvidence)
@@ -216,12 +229,6 @@ void engine::GameScreen::createViewEvidenceLayout()
         viewEvidenceLayout->AddTextElement(evidence, {startPos.x, startPos.y + index * offsetY});
         index++;
     }
-
-    viewEvidenceLayout->AddButtonElement("Back to Main Menu", lastButtonPos, [this]() { //
-        playAudioOneTime("assets/Sound/button.mp3");
-        switchLayout(*mainMenuLayout);
-        createMainMenuLayout();
-    });
 }
 
 void engine::GameScreen::createMakeAccusationLayout()
@@ -229,96 +236,77 @@ void engine::GameScreen::createMakeAccusationLayout()
     constexpr sf::Vector2f startPos = {50.f, 150.f};
     constexpr float offsetY = 75.f;
 
-    uint16_t accuseTextId = makeAccusationLayout->AddTextElement("-", {300.f, 150.f});
-    makeAccusationLayout->getElementById(accuseTextId)->SetHidden(true);
+    accuseMakeAccusationTextId = makeAccusationLayout->AddTextElement("-", {300.f, 150.f});
+    makeAccusationLayout->getElementById(accuseMakeAccusationTextId)->SetHidden(true);
 
     makeAccusationLayout->AddTextElement("Who do you want to accuse?", {50.f, 75.f});
 
-    uint16_t backButtonElementId = makeAccusationLayout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
+    backMakeAccusationButtonId = makeAccusationLayout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
-        switchLayout(*mainMenuLayout);
-        createMainMenuLayout();
+        ChangeUILayout(*mainMenuLayout);
     });
 
-    makeAccusationLayout->AddButtonElement("Mujtaba", {startPos.x, startPos.y}, [this, accuseTextId, backButtonElementId]() { //
+    auto accuseSuspect = [this](const std::string &suspectName, const std::string &resultText)
+    {
         if (m_game_state.gameRunning == false)
             return;
 
         playAudioOneTime("assets/Sound/button.mp3");
 
-        auto elem = dynamic_cast<gui::elements::TextElement *>(makeAccusationLayout->getElementById(accuseTextId));
-        elem->SetText("You accused Mujtaba!\nThe real culprit was Azhan.");
+        auto elem = dynamic_cast<gui::elements::TextElement *>(makeAccusationLayout->getElementById(accuseMakeAccusationTextId));
+        elem->SetText("You accused " + suspectName + "!\n" + resultText);
         elem->SetHidden(false);
+
+        // disable all buttons
+        investigateLocationLayout->DisableAllButtons();
+        interrogateSuspectLayout->DisableAllButtons();
+        // viewEvidenceLayout->DisableAllButtons(); // cannot disable as it is created on the fly
         makeAccusationLayout->DisableAllButtons();
 
-        auto backButtonElem = dynamic_cast<gui::elements::ButtonElement *>(makeAccusationLayout->getElementById(backButtonElementId));
-        backButtonElem->SetDisabled(false);
+        // enable back buttons
+        auto investigateButton = dynamic_cast<gui::elements::ButtonElement *>(investigateLocationLayout->getElementById(backInvestigateLocationButtonId));
+        investigateButton->SetDisabled(false);
+        auto interrogateButton = dynamic_cast<gui::elements::ButtonElement *>(interrogateSuspectLayout->getElementById(backInterrogateSuspectButtonId));
+        interrogateButton->SetDisabled(false);
+        // skip viewEvidenceLayout as it is created on the fly
+        auto makeAccusationButton = dynamic_cast<gui::elements::ButtonElement *>(makeAccusationLayout->getElementById(backMakeAccusationButtonId));
+        makeAccusationButton->SetDisabled(false);
 
         m_game_state.gameRunning = false;
+    };
+
+    makeAccusationLayout->AddButtonElement("Mujtaba", {startPos.x, startPos.y}, [this, accuseSuspect]() { //
+        accuseSuspect("Mujtaba", "The real culprit was Azhan.");
     });
 
-    makeAccusationLayout->AddButtonElement("Azhan", {startPos.x, startPos.y + offsetY}, [this, accuseTextId, backButtonElementId]() { //
-        if (m_game_state.gameRunning == false)
-            return;
-
-        playAudioOneTime("assets/Sound/button.mp3");
-
-        auto elem = dynamic_cast<gui::elements::TextElement *>(makeAccusationLayout->getElementById(accuseTextId));
-        elem->SetText("You accused Azhan!\nHe was the real culprit!");
-        elem->SetHidden(false);
-        makeAccusationLayout->DisableAllButtons();
-
-        auto backButtonElem = dynamic_cast<gui::elements::ButtonElement *>(makeAccusationLayout->getElementById(backButtonElementId));
-        backButtonElem->SetDisabled(false);
-
-        m_game_state.gameRunning = false;
+    makeAccusationLayout->AddButtonElement("Azhan", {startPos.x, startPos.y + offsetY}, [this, accuseSuspect]() { //
+        accuseSuspect("Azhan", "Congratulations! You found the real culprit!");
     });
 
-    makeAccusationLayout->AddButtonElement("Sheharyar", {startPos.x, startPos.y + 2 * offsetY}, [this, accuseTextId, backButtonElementId]() { //
-        if (m_game_state.gameRunning == false)
-            return;
-
-        playAudioOneTime("assets/Sound/button.mp3");
-
-        auto elem = dynamic_cast<gui::elements::TextElement *>(makeAccusationLayout->getElementById(accuseTextId));
-        elem->SetText("You accused Sheharyar!\nThe real culprit was Azhan.");
-        elem->SetHidden(false);
-        makeAccusationLayout->DisableAllButtons();
-
-        auto backButtonElem = dynamic_cast<gui::elements::ButtonElement *>(makeAccusationLayout->getElementById(backButtonElementId));
-        backButtonElem->SetDisabled(false);
-
-        m_game_state.gameRunning = false;
+    makeAccusationLayout->AddButtonElement("Sheharyar", {startPos.x, startPos.y + 2 * offsetY}, [this, accuseSuspect]() { //
+        accuseSuspect("Sheharyar", "The real culprit was Azhan.");
     });
 }
 
 void engine::GameScreen::addEvidenceItem(const std::string &item)
 {
-    // if (lastCollectedEvidenceIndex < collectedEvidence.size())
-    // {
-        for (const auto &evidence : collectedEvidence)
-        {
-            if (evidence == item)
-            {
-                DEBUG_PRINT("Evidence already collected");
-                return;
-            }
-        }
-        // overwrite in a circular manner
-        collectedEvidence[lastCollectedEvidenceIndex % collectedEvidence.size()] = item;
-        lastCollectedEvidenceIndex++;
-        DEBUG_PRINT("Evidence added: " + item);
-    // }
-    // else
-    // {
-    //     DEBUG_PRINT("Evidence storage full, cannot add more evidence");
-    // }
-}
+    if (lastCollectedEvidenceIndex >= collectedEvidence.size())
+    {
+        DEBUG_PRINT("Evidence storage full, overwriting oldest evidence.");
+    }
 
-void engine::GameScreen::switchLayout(UILayout &layout)
-{
-    layout.ClearLayout();
-    ChangeUILayout(layout);
+    for (const auto &evidence : collectedEvidence)
+    {
+        if (evidence == item)
+        {
+            DEBUG_PRINT("Evidence already collected");
+            return;
+        }
+    }
+    // overwrite in a circular manner
+    collectedEvidence[lastCollectedEvidenceIndex % collectedEvidence.size()] = item;
+    lastCollectedEvidenceIndex++;
+    DEBUG_PRINT("Evidence added: " + item);
 }
 
 void engine::GameScreen::ChangeUILayout(UILayout &layout)
@@ -366,24 +354,24 @@ void engine::GameScreen::StartLoop()
 void engine::GameScreen::setBackgroundMusic(const std::string &path)
 {
     // Load the sound buffer from file
-    if (!backgroundMusic.openFromFile("assets/Sound/background.mp3"))
+    if (!backgroundMusic.openFromFile(path))
     {
-        std::cerr << "Failed to load sound buffer from file: assets/Sound/button.mp3\n";
+        throw std::runtime_error("Failed to load background music from file: " + path);
     }
     backgroundMusic.setLooping(true);
     backgroundMusic.setVolume(50.f); // 0 - 100
     backgroundMusic.play();
-    std::cout << "Background music started: " << path << "\n";
+    DEBUG_PRINT("Background music started: " + path);
 }
 void engine::GameScreen::playAudioOneTime(std::string path)
 {
     // Load the sound buffer from file
     if (!soundBuffer.loadFromFile("assets/Sound/button.mp3"))
     {
-        std::cerr << "Failed to load sound buffer from file: assets/Sound/button.mp3\n";
+        throw std::runtime_error("Failed to load sound buffer from file: " + path);
     }
     sound.setBuffer(soundBuffer);
     sound.setVolume(80.f); // 0 - 100
     sound.play();
-    std::cout << "Playing sound once: " << path << "\n";
+    DEBUG_PRINT("Played sound: " + path);
 }
