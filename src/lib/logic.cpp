@@ -11,8 +11,8 @@ std::string currentLocation;
 std::string criminal;
 
 /// @brief Vector to store locations and suspects
-std::vector<std::string> locations = { "Study Room", "Kitchen", "Garden", "TV Lounge", "Basement" };
-std::vector<std::string> suspects = { "Ali", "Maria", "John" };
+std::vector<std::string> locations = {"Kitchen", "Garden", "TV Lounge", "Basement"};
+std::vector<std::string> suspects = {"Jackson", "Hagrid", "Julian"};
 
 /// @brief Function to initialize the game
 void initializeGame()
