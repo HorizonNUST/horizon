@@ -8,7 +8,7 @@ engine::GameScreen::GameScreen()
 {
     m_window = sf::RenderWindow(sf::VideoMode({800u, 600u}), "Horizon", sf::Style::Titlebar | sf::Style::Close);
 
-    setBackgroundMusic("assets/Sound/background.mp3");
+    setBackgroundMusic("assets/Sound/background.wav");
 
     // Layouts
     mainMenuLayout = new UILayout(0);
@@ -58,17 +58,17 @@ void engine::GameScreen::createMainMenuLayout()
     mainMenuLayout->AddTextElement("Choose what to do", {50.f, 75.f});
 
     mainMenuLayout->AddButtonElement("Investigate Location", {startPos.x, startPos.y}, [this]() { //
-        playAudioOneTime("assets/Sound/button.mp3");
+        playAudioOneTime("assets/Sound/button.wav");
         ChangeUILayout(*investigateLocationLayout);
     });
 
     mainMenuLayout->AddButtonElement("Interrogate Suspect", {startPos.x, startPos.y + offsetY}, [this]() { //
-        playAudioOneTime("assets/Sound/button.mp3");
+        playAudioOneTime("assets/Sound/button.wav");
         ChangeUILayout(*interrogateSuspectLayout);
     });
 
     mainMenuLayout->AddButtonElement("View Evidence", {startPos.x, startPos.y + 2 * offsetY}, [this]() { //
-        playAudioOneTime("assets/Sound/button.mp3");
+        playAudioOneTime("assets/Sound/button.wav");
         viewEvidenceLayout->ClearLayout(); // clear previous evidence entries
         createViewEvidenceLayout();
         ChangeUILayout(*viewEvidenceLayout);
@@ -78,7 +78,7 @@ void engine::GameScreen::createMainMenuLayout()
     mainMenuLayout->GetElementById(noEvidenceMainMenuTextId)->SetHidden(true);
 
     mainMenuLayout->AddButtonElement("Make Accusation", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
-        playAudioOneTime("assets/Sound/button.mp3");
+        playAudioOneTime("assets/Sound/button.wav");
 
         if (collectedEvidence[0].empty())
         {
@@ -91,7 +91,7 @@ void engine::GameScreen::createMainMenuLayout()
     });
 
     mainMenuLayout->AddButtonElement("Exit Game", {startPos.x, startPos.y + 4 * offsetY}, [this]() { //
-        playAudioOneTime("assets/Sound/button.mp3");
+        playAudioOneTime("assets/Sound/button.wav");
         m_window.close();
     });
 }
@@ -111,12 +111,12 @@ void engine::GameScreen::createInvestigateLocationLayout()
     // BACK BUTTON
 
     backInvestigateLocationButtonId = investigateLocationLayout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 4 * offsetY}, [this]() { //
-        playAudioOneTime("assets/Sound/button.mp3");
+        playAudioOneTime("assets/Sound/button.wav");
         ChangeUILayout(*mainMenuLayout);
     });
 
     investigateLocationLayout->AddButtonElement("Kitchen", {startPos.x, startPos.y}, [this]() { //
-        playAudioOneTime("assets/Sound/button.mp3");
+        playAudioOneTime("assets/Sound/button.wav");
 
         addEvidenceItem("Found a torn crumpled page in the Kitchen.");
 
@@ -132,10 +132,12 @@ void engine::GameScreen::createInvestigateLocationLayout()
                       "never drank, suggests someone\n"
                       "else prepared it.");
         elem->SetHidden(false);
+
+        m_game_state.inspectionsCount++;
     });
 
     investigateLocationLayout->AddButtonElement("Basement", {startPos.x, startPos.y + offsetY}, [this]() { //
-        playAudioOneTime("assets/Sound/button.mp3");
+        playAudioOneTime("assets/Sound/button.wav");
 
         addEvidenceItem("Found mysterious footprints in the Basement.");
 
@@ -149,10 +151,12 @@ void engine::GameScreen::createInvestigateLocationLayout()
                       "caught in the grate, as if\n"
                       "someone tried burning evidence");
         elem->SetHidden(false);
+
+        m_game_state.inspectionsCount++;
     });
 
     investigateLocationLayout->AddButtonElement("TV Lounge", {startPos.x, startPos.y + 2 * offsetY}, [this]() { //
-        playAudioOneTime("assets/Sound/button.mp3");
+        playAudioOneTime("assets/Sound/button.wav");
 
         addEvidenceItem("Found that there is no contact to outside world from the TV Lounge.");
 
@@ -169,10 +173,12 @@ void engine::GameScreen::createInvestigateLocationLayout()
                       "and farmhouse is outside the\n"
                       "city");
         elem->SetHidden(false);
+
+        m_game_state.inspectionsCount++;
     });
 
     investigateLocationLayout->AddButtonElement("Garden", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
-        playAudioOneTime("assets/Sound/button.mp3");
+        playAudioOneTime("assets/Sound/button.wav");
 
         addEvidenceItem("Found and muddy bootprint in the Garden.");
 
@@ -185,6 +191,8 @@ void engine::GameScreen::createInvestigateLocationLayout()
                       "A single muddy bootprint\n"
                       "is seen before disappearing");
         elem->SetHidden(false);
+
+        m_game_state.inspectionsCount++;
     });
 }
 
@@ -202,12 +210,12 @@ void engine::GameScreen::createInterrogateSuspectLayout()
 
     // BACK BUTTON
     backInterrogateSuspectButtonId = interrogateSuspectLayout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 4 * offsetY}, [this]() { //
-        playAudioOneTime("assets/Sound/button.mp3");
+        playAudioOneTime("assets/Sound/button.wav");
         ChangeUILayout(*mainMenuLayout);
     });
 
     interrogateSuspectLayout->AddButtonElement("Jackson", {startPos.x, startPos.y}, [this]() { //
-        playAudioOneTime("assets/Sound/button.mp3");
+        playAudioOneTime("assets/Sound/button.wav");
 
         addEvidenceItem("Jackson was in the basement.");
 
@@ -223,10 +231,12 @@ void engine::GameScreen::createInterrogateSuspectLayout()
                       "upstairs — then I came up and\n"
                       "discovered the body.");
         elem->SetHidden(false);
+
+        m_game_state.inspectionsCount++;
     });
 
     interrogateSuspectLayout->AddButtonElement("Hagrid", {startPos.x, startPos.y + offsetY}, [this]() { //
-        playAudioOneTime("assets/Sound/button.mp3");
+        playAudioOneTime("assets/Sound/button.wav");
 
         addEvidenceItem("Hagrid was in the TV lounge.");
 
@@ -243,10 +253,12 @@ void engine::GameScreen::createInterrogateSuspectLayout()
                       "gunshot. I must have dozed off\n"
                       "soon after");
         elem->SetHidden(false);
+
+        m_game_state.inspectionsCount++;
     });
 
     interrogateSuspectLayout->AddButtonElement("Julian", {startPos.x, startPos.y + 2 * offsetY}, [this]() { //
-        playAudioOneTime("assets/Sound/button.mp3");
+        playAudioOneTime("assets/Sound/button.wav");
 
         addEvidenceItem("Julian was outside the garden.");
 
@@ -263,6 +275,8 @@ void engine::GameScreen::createInterrogateSuspectLayout()
                       "heard the window close, but by\n"
                       "then everything was chaos.");
         elem->SetHidden(false);
+
+        m_game_state.inspectionsCount++;
     });
 }
 
@@ -278,7 +292,7 @@ void engine::GameScreen::createViewEvidenceLayout()
 
     // BACK BUTTON
     backViewEvidenceButtonId = viewEvidenceLayout->AddButtonElement("Back to Main Menu", lastButtonPos, [this]() { //
-        playAudioOneTime("assets/Sound/button.mp3");
+        playAudioOneTime("assets/Sound/button.wav");
         ChangeUILayout(*mainMenuLayout);
     });
 
@@ -307,7 +321,7 @@ void engine::GameScreen::createMakeAccusationLayout()
     makeAccusationLayout->AddTextElement("Who do you want to accuse?", {50.f, 75.f});
 
     backMakeAccusationButtonId = makeAccusationLayout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
-        playAudioOneTime("assets/Sound/button.mp3");
+        playAudioOneTime("assets/Sound/button.wav");
         ChangeUILayout(*mainMenuLayout);
     });
 
@@ -316,7 +330,7 @@ void engine::GameScreen::createMakeAccusationLayout()
         if (m_game_state.gameRunning == false)
             return;
 
-        playAudioOneTime("assets/Sound/button.mp3");
+        playAudioOneTime("assets/Sound/button.wav");
 
         auto elem = dynamic_cast<gui::elements::TextElement *>(makeAccusationLayout->GetElementById(accuseMakeAccusationTextId));
         elem->SetText("You accused " + suspectName + "!\n" + resultText);
@@ -442,19 +456,19 @@ void engine::GameScreen::setBackgroundMusic(const std::string &path)
         throw std::runtime_error("Failed to load background music from file: " + path);
     }
     backgroundMusic.setLooping(true);
-    backgroundMusic.setVolume(50.f); // 0 - 100
+    backgroundMusic.setVolume(50.f);
     backgroundMusic.play();
     DEBUG_PRINT("Background music started: " + path);
 }
 void engine::GameScreen::playAudioOneTime(std::string path)
 {
     // Load the sound buffer from file
-    if (!soundBuffer.loadFromFile("assets/Sound/button.mp3"))
+    if (!soundBuffer.loadFromFile(path))
     {
         throw std::runtime_error("Failed to load sound buffer from file: " + path);
     }
     sound.setBuffer(soundBuffer);
-    sound.setVolume(80.f); // 0 - 100
+    sound.setVolume(80.f);
     sound.play();
     DEBUG_PRINT("Played sound: " + path);
 }

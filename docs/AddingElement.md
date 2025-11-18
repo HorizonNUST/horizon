@@ -44,7 +44,7 @@ Example:
 
 ```cpp
 layoutName->AddButtonElement("Sample Button", {50.f, 50.f}, [this]() { // pass in this to access class variables
-    playAudioOneTime("assets/Sound/button.mp3");
+    playAudioOneTime("assets/Sound/button.wav");
     ChangeUILayout(*newLayout);
 });
 ```
@@ -54,7 +54,7 @@ Example to toggle `TextElement`:
 ```cpp
 uint16_t dummyTextElementId = secondLayout->AddTextElement("TEST", {0.f, 120.f}); // the function returns an `uint16_t` id associated with the element
 layoutName->AddButtonElement("Sample Button", {50.f, 50.f}, [this, dummyTextElementId]() { // pass in `this` to access class variables
-    playAudioOneTime("assets/Sound/button.mp3");
+    playAudioOneTime("assets/Sound/button.wav");
     engine::gui::elements::UIElement* element = layoutName->getElementById(dummyTextElementId);
     element->SetHidden(!element->IsHidden());
 });

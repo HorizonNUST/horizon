@@ -17,6 +17,7 @@ namespace engine
     struct GameState
     {
         bool gameRunning = true;
+        size_t inspectionsCount = 0;
     };
 
     /// @brief Main Screen
