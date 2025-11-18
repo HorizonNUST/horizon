@@ -31,6 +31,18 @@ void engine::UILayout::ClearLayout()
     lastID = 0;
 }
 
+void engine::UILayout::DisableAllButtons()
+{
+    for (const auto &element : m_elements)
+    {
+        auto buttonElement = dynamic_cast<engine::gui::elements::ButtonElement *>(element.get());
+        if (buttonElement)
+        {
+            buttonElement->SetDisabled(true);
+        }
+    }
+}
+
 engine::gui::elements::UIElement *engine::UILayout::getElementById(uint16_t id)
 {
     for (const std::unique_ptr<engine::gui::elements::UIElement> &element : m_elements)

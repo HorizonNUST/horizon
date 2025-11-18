@@ -34,6 +34,7 @@ namespace engine
         uint16_t AddButtonElement(const std::string &text, const sf::Vector2f &position, std::function<void()> callback = CONSTANTS::NULLFUNC, engine::gui::elements::ButtonConfig config = {});
     
         void ClearLayout();
+        void DisableAllButtons();
 
         engine::gui::elements::UIElement* getElementById(uint16_t id);
 

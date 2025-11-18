@@ -69,8 +69,19 @@ void engine::GameScreen::createMainMenuLayout()
         ChangeUILayout(*viewEvidenceLayout);
     });
 
+    // uint16_t noEvidenceTextId = mainMenuLayout->AddTextElement("No evidence collected yet.", {350.f, 7.5f + startPos.y + 3 * offsetY});
+    // mainMenuLayout->getElementById(noEvidenceTextId)->SetHidden(true);
+
     mainMenuLayout->AddButtonElement("Make Accusation", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
+
+        // if (collectedEvidence[0].empty())
+        // {
+        //     // No evidence collected yet
+        //     mainMenuLayout->getElementById(noEvidenceTextId)->SetHidden(false);
+        //     return;
+        // }
+
         ChangeUILayout(*makeAccusationLayout);
     });
 
@@ -191,7 +202,7 @@ void engine::GameScreen::createViewEvidenceLayout()
     viewEvidenceLayout->AddTextElement("Collected Evidence:", {50.f, 75.f});
 
     int index = 0;
-    
+
     for (const std::string &evidence : collectedEvidence)
     {
         if (evidence.empty())
@@ -217,7 +228,12 @@ void engine::GameScreen::createMakeAccusationLayout()
 
     makeAccusationLayout->AddTextElement("Who do you want to accuse?", {50.f, 75.f});
 
-    makeAccusationLayout->AddButtonElement("Mujtaba", {startPos.x, startPos.y}, [this, accuseTextId]() { //
+    uint16_t backButtonElementId = makeAccusationLayout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+        ChangeUILayout(*mainMenuLayout);
+    });
+
+    makeAccusationLayout->AddButtonElement("Mujtaba", {startPos.x, startPos.y}, [this, accuseTextId, backButtonElementId]() { //
         if (m_game_state.gameRunning == false)
             return;
 
@@ -226,11 +242,15 @@ void engine::GameScreen::createMakeAccusationLayout()
         auto elem = dynamic_cast<gui::elements::TextElement *>(makeAccusationLayout->getElementById(accuseTextId));
         elem->SetText("You accused Mujtaba!\nThe real culprit was Azhan.");
         elem->SetHidden(false);
+        makeAccusationLayout->DisableAllButtons();
+
+        auto backButtonElem = dynamic_cast<gui::elements::ButtonElement *>(makeAccusationLayout->getElementById(backButtonElementId));
+        backButtonElem->SetDisabled(false);
 
         m_game_state.gameRunning = false;
     });
 
-    makeAccusationLayout->AddButtonElement("Azhan", {startPos.x, startPos.y + offsetY}, [this, accuseTextId]() { //
+    makeAccusationLayout->AddButtonElement("Azhan", {startPos.x, startPos.y + offsetY}, [this, accuseTextId, backButtonElementId]() { //
         if (m_game_state.gameRunning == false)
             return;
 
@@ -239,11 +259,15 @@ void engine::GameScreen::createMakeAccusationLayout()
         auto elem = dynamic_cast<gui::elements::TextElement *>(makeAccusationLayout->getElementById(accuseTextId));
         elem->SetText("You accused Azhan!\nHe was the real culprit!");
         elem->SetHidden(false);
+        makeAccusationLayout->DisableAllButtons();
+
+        auto backButtonElem = dynamic_cast<gui::elements::ButtonElement *>(makeAccusationLayout->getElementById(backButtonElementId));
+        backButtonElem->SetDisabled(false);
 
         m_game_state.gameRunning = false;
     });
 
-    makeAccusationLayout->AddButtonElement("Sheharyar", {startPos.x, startPos.y + 2 * offsetY}, [this, accuseTextId]() { //
+    makeAccusationLayout->AddButtonElement("Sheharyar", {startPos.x, startPos.y + 2 * offsetY}, [this, accuseTextId, backButtonElementId]() { //
         if (m_game_state.gameRunning == false)
             return;
 
@@ -252,13 +276,12 @@ void engine::GameScreen::createMakeAccusationLayout()
         auto elem = dynamic_cast<gui::elements::TextElement *>(makeAccusationLayout->getElementById(accuseTextId));
         elem->SetText("You accused Sheharyar!\nThe real culprit was Azhan.");
         elem->SetHidden(false);
+        makeAccusationLayout->DisableAllButtons();
+
+        auto backButtonElem = dynamic_cast<gui::elements::ButtonElement *>(makeAccusationLayout->getElementById(backButtonElementId));
+        backButtonElem->SetDisabled(false);
 
         m_game_state.gameRunning = false;
-    });
-
-    makeAccusationLayout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
-        playAudioOneTime("assets/Sound/button.mp3");
-        ChangeUILayout(*mainMenuLayout);
     });
 }
 
