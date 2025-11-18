@@ -22,7 +22,7 @@ namespace engine::gui::elements
 
     private:
         uint16_t m_id;
-        bool m_hidden;
+        bool m_hidden = false;
 
     protected:
         inline void setID(uint16_t id) { m_id = id; }

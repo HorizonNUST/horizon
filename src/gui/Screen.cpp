@@ -39,7 +39,7 @@ engine::GameScreen::GameScreen()
     });
 
     // First Room
-    auto r1_text = room1->AddTextElement("Clue: Broken Vase", {40.f, 200.f});
+    auto r1_text = room1->AddTextElement("abc", {40.f, 200.f});
     room1->getElementById(r1_text)->SetHidden(true);
 
     room1->AddButtonElement("Toggle Clue Fingerprints on Broken Vase", {20.f, 120.f}, 
