@@ -48,30 +48,31 @@ engine::GameScreen::~GameScreen()
 
 void engine::GameScreen::createMainMenuLayout()
 {
-    // random background image
-    mainMenuLayout->AddImageElement(getRandomImagePath(), {0.f, 0.f});
-
-    // Main Menu
     constexpr sf::Vector2f startPos = {50.f, 150.f};
     constexpr float offsetY = 75.f;
 
+    // random background image
+    mainMenuLayout->AddImageElement(getRandomImagePath(), {0.f, 0.f});
+
+    // title
     mainMenuLayout->AddTextElement("Choose what to do", {50.f, 75.f});
+
+    // inspectionCountShow
+    mainMenuLayout->AddTextElement("Inspections: " + std::to_string(m_game_state.inspectionsCount), {535.f, 30.f});
 
     mainMenuLayout->AddButtonElement("Investigate Location", {startPos.x, startPos.y}, [this]() { //
         playAudioOneTime("assets/Sound/button.wav");
-        ChangeUILayout(*investigateLocationLayout);
+        goToInvestigateLocationLayout();
     });
 
     mainMenuLayout->AddButtonElement("Interrogate Suspect", {startPos.x, startPos.y + offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.wav");
-        ChangeUILayout(*interrogateSuspectLayout);
+        goToInterrogateSuspectLayout();
     });
 
     mainMenuLayout->AddButtonElement("View Evidence", {startPos.x, startPos.y + 2 * offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.wav");
-        viewEvidenceLayout->ClearLayout(); // clear previous evidence entries
-        createViewEvidenceLayout();
-        ChangeUILayout(*viewEvidenceLayout);
+        goToViewEvidenceLayout();
     });
 
     noEvidenceMainMenuTextId = mainMenuLayout->AddTextElement("No evidence collected yet.", {350.f, 7.5f + startPos.y + 3 * offsetY});
@@ -87,7 +88,7 @@ void engine::GameScreen::createMainMenuLayout()
             return;
         }
 
-        ChangeUILayout(*makeAccusationLayout);
+        goToMakeAccusationLayout();
     });
 
     mainMenuLayout->AddButtonElement("Exit Game", {startPos.x, startPos.y + 4 * offsetY}, [this]() { //
@@ -112,7 +113,7 @@ void engine::GameScreen::createInvestigateLocationLayout()
 
     backInvestigateLocationButtonId = investigateLocationLayout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 4 * offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.wav");
-        ChangeUILayout(*mainMenuLayout);
+        goToMainMenuLayout();
     });
 
     investigateLocationLayout->AddButtonElement("Kitchen", {startPos.x, startPos.y}, [this]() { //
@@ -211,7 +212,7 @@ void engine::GameScreen::createInterrogateSuspectLayout()
     // BACK BUTTON
     backInterrogateSuspectButtonId = interrogateSuspectLayout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 4 * offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.wav");
-        ChangeUILayout(*mainMenuLayout);
+        goToMainMenuLayout();
     });
 
     interrogateSuspectLayout->AddButtonElement("Jackson", {startPos.x, startPos.y}, [this]() { //
@@ -293,7 +294,7 @@ void engine::GameScreen::createViewEvidenceLayout()
     // BACK BUTTON
     backViewEvidenceButtonId = viewEvidenceLayout->AddButtonElement("Back to Main Menu", lastButtonPos, [this]() { //
         playAudioOneTime("assets/Sound/button.wav");
-        ChangeUILayout(*mainMenuLayout);
+        goToMainMenuLayout();
     });
 
     int index = 0;
@@ -322,7 +323,7 @@ void engine::GameScreen::createMakeAccusationLayout()
 
     backMakeAccusationButtonId = makeAccusationLayout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.wav");
-        ChangeUILayout(*mainMenuLayout);
+        goToMainMenuLayout();
     });
 
     auto accuseSuspect = [this](const std::string &suspectName, const std::string &resultText)
@@ -355,15 +356,15 @@ void engine::GameScreen::createMakeAccusationLayout()
     };
 
     makeAccusationLayout->AddButtonElement("Jackson", {startPos.x, startPos.y}, [this, accuseSuspect]() { //
-        accuseSuspect("Jackson", "Wrong accusation! The real culprit was Hagrid.");
+        accuseSuspect("Jackson", "Wrong accusation!\nThe real culprit was Hagrid.");
     });
 
     makeAccusationLayout->AddButtonElement("Hagrid", {startPos.x, startPos.y + offsetY}, [this, accuseSuspect]() { //
-        accuseSuspect("Hagrid", "Hagrid Confessed! You solved the case!");
+        accuseSuspect("Hagrid", "Hagrid Confessed!\nYou solved the case!");
     });
 
     makeAccusationLayout->AddButtonElement("Julian", {startPos.x, startPos.y + 2 * offsetY}, [this, accuseSuspect]() { //
-        accuseSuspect("Julian", "Wrong accusation! The real culprit was Hagrid.");
+        accuseSuspect("Julian", "Wrong accusation!\nThe real culprit was Hagrid.");
     });
 }
 
@@ -404,6 +405,38 @@ std::string engine::GameScreen::getRandomImagePath() const
     default:
         return "assets/bgs/basement.png";
     }
+}
+
+void engine::GameScreen::goToMainMenuLayout()
+{
+    mainMenuLayout->ClearLayout();
+    createMainMenuLayout();
+    ChangeUILayout(*mainMenuLayout);
+}
+
+void engine::GameScreen::goToInvestigateLocationLayout()
+{
+    // dont refresh
+    ChangeUILayout(*investigateLocationLayout);
+}
+
+void engine::GameScreen::goToInterrogateSuspectLayout()
+{
+    // dont refresh
+    ChangeUILayout(*interrogateSuspectLayout);
+}
+
+void engine::GameScreen::goToViewEvidenceLayout()
+{
+    viewEvidenceLayout->ClearLayout();
+    createViewEvidenceLayout();
+    ChangeUILayout(*viewEvidenceLayout);
+}
+
+void engine::GameScreen::goToMakeAccusationLayout()
+{
+    // dont refresh
+    ChangeUILayout(*makeAccusationLayout);
 }
 
 void engine::GameScreen::ChangeUILayout(UILayout &layout)

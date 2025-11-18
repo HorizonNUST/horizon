@@ -75,6 +75,12 @@ namespace engine
 
         std::string getRandomImagePath() const;
 
+        void goToMainMenuLayout();
+        void goToInvestigateLocationLayout();
+        void goToInterrogateSuspectLayout();
+        void goToViewEvidenceLayout();
+        void goToMakeAccusationLayout();
+
     public:
         GameScreen();
         ~GameScreen();
