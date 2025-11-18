@@ -4,10 +4,16 @@ A basic detective game in C++.
 
 ## How to Run
 
+### Windows
 - Run `setup.sh` is using `bash` or `setup.bat` on `windows`
 - Wait until execution is finished
 - Run `run.sh` or `run.bat` depending on platform
 
+### Linux/macOS
+- Make `setup.sh` executable if needed:
+   ```bash
+   chmod +x setup.s
+   
 # Instructions For The Game
 
 ## How to play
