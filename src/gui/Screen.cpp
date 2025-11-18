@@ -25,7 +25,8 @@ engine::GameScreen::GameScreen()
     createMainMenuLayout();
     createInvestigateLocationLayout();
     createInterrogateSuspectLayout();
-    // evidence created on the fly
+    // evidenceLayout created on the fly
+    // createViewEvidenceLayout()
     createMakeAccusationLayout();
 
     ChangeUILayout(*mainMenuLayout);
@@ -54,35 +55,37 @@ void engine::GameScreen::createMainMenuLayout()
 
     mainMenuLayout->AddButtonElement("Investigate Location", {startPos.x, startPos.y}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
-        ChangeUILayout(*investigateLocationLayout);
+        switchLayout(*investigateLocationLayout);
+        createInvestigateLocationLayout();
     });
 
     mainMenuLayout->AddButtonElement("Interrogate Suspect", {startPos.x, startPos.y + offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
-        ChangeUILayout(*interrogateSuspectLayout);
+        switchLayout(*interrogateSuspectLayout);
+        createInterrogateSuspectLayout();
     });
 
     mainMenuLayout->AddButtonElement("View Evidence", {startPos.x, startPos.y + 2 * offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
-        viewEvidenceLayout->ClearLayout();
+        switchLayout(*viewEvidenceLayout);
         createViewEvidenceLayout();
-        ChangeUILayout(*viewEvidenceLayout);
     });
 
-    // uint16_t noEvidenceTextId = mainMenuLayout->AddTextElement("No evidence collected yet.", {350.f, 7.5f + startPos.y + 3 * offsetY});
-    // mainMenuLayout->getElementById(noEvidenceTextId)->SetHidden(true);
+    uint16_t noEvidenceTextId = mainMenuLayout->AddTextElement("No evidence collected yet.", {350.f, 7.5f + startPos.y + 3 * offsetY});
+    mainMenuLayout->getElementById(noEvidenceTextId)->SetHidden(true);
 
-    mainMenuLayout->AddButtonElement("Make Accusation", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
+    mainMenuLayout->AddButtonElement("Make Accusation", {startPos.x, startPos.y + 3 * offsetY}, [this, noEvidenceTextId]() { //
         playAudioOneTime("assets/Sound/button.mp3");
 
-        // if (collectedEvidence[0].empty())
-        // {
-        //     // No evidence collected yet
-        //     mainMenuLayout->getElementById(noEvidenceTextId)->SetHidden(false);
-        //     return;
-        // }
+        if (collectedEvidence[0].empty())
+        {
+            // No evidence collected yet
+            mainMenuLayout->getElementById(noEvidenceTextId)->SetHidden(false);
+            return;
+        }
 
-        ChangeUILayout(*makeAccusationLayout);
+        switchLayout(*makeAccusationLayout);
+        createMakeAccusationLayout();
     });
 
     mainMenuLayout->AddButtonElement("Exit Game", {startPos.x, startPos.y + 4 * offsetY}, [this]() { //
@@ -143,7 +146,8 @@ void engine::GameScreen::createInvestigateLocationLayout()
 
     investigateLocationLayout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 4 * offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
-        ChangeUILayout(*mainMenuLayout);
+        switchLayout(*mainMenuLayout);
+        createMainMenuLayout();
     });
 }
 
@@ -189,7 +193,8 @@ void engine::GameScreen::createInterrogateSuspectLayout()
 
     interrogateSuspectLayout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
-        ChangeUILayout(*mainMenuLayout);
+        switchLayout(*mainMenuLayout);
+        createMainMenuLayout();
     });
 }
 
@@ -214,7 +219,8 @@ void engine::GameScreen::createViewEvidenceLayout()
 
     viewEvidenceLayout->AddButtonElement("Back to Main Menu", lastButtonPos, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
-        ChangeUILayout(*mainMenuLayout);
+        switchLayout(*mainMenuLayout);
+        createMainMenuLayout();
     });
 }
 
@@ -230,7 +236,8 @@ void engine::GameScreen::createMakeAccusationLayout()
 
     uint16_t backButtonElementId = makeAccusationLayout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
-        ChangeUILayout(*mainMenuLayout);
+        switchLayout(*mainMenuLayout);
+        createMainMenuLayout();
     });
 
     makeAccusationLayout->AddButtonElement("Mujtaba", {startPos.x, startPos.y}, [this, accuseTextId, backButtonElementId]() { //
@@ -287,8 +294,8 @@ void engine::GameScreen::createMakeAccusationLayout()
 
 void engine::GameScreen::addEvidenceItem(const std::string &item)
 {
-    if (lastCollectedEvidenceIndex < collectedEvidence.size())
-    {
+    // if (lastCollectedEvidenceIndex < collectedEvidence.size())
+    // {
         for (const auto &evidence : collectedEvidence)
         {
             if (evidence == item)
@@ -297,14 +304,21 @@ void engine::GameScreen::addEvidenceItem(const std::string &item)
                 return;
             }
         }
-        collectedEvidence[lastCollectedEvidenceIndex] = item;
+        // overwrite in a circular manner
+        collectedEvidence[lastCollectedEvidenceIndex % collectedEvidence.size()] = item;
         lastCollectedEvidenceIndex++;
         DEBUG_PRINT("Evidence added: " + item);
-    }
-    else
-    {
-        DEBUG_PRINT("Evidence storage full, cannot add more evidence");
-    }
+    // }
+    // else
+    // {
+    //     DEBUG_PRINT("Evidence storage full, cannot add more evidence");
+    // }
+}
+
+void engine::GameScreen::switchLayout(UILayout &layout)
+{
+    layout.ClearLayout();
+    ChangeUILayout(layout);
 }
 
 void engine::GameScreen::ChangeUILayout(UILayout &layout)

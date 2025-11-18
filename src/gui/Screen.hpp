@@ -32,7 +32,7 @@ namespace engine
         sf::SoundBuffer soundBuffer; // for short sound
         sf::Sound sound;
 
-        std::array<std::string, 8> collectedEvidence;
+        std::array<std::string, 4> collectedEvidence;
         size_t lastCollectedEvidenceIndex = 0;
 
         // Main Menu
@@ -55,6 +55,8 @@ namespace engine
         void createMakeAccusationLayout();
 
         void addEvidenceItem(const std::string &item);
+
+        void switchLayout(UILayout &layout);
 
     public:
         GameScreen();
