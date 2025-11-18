@@ -50,6 +50,8 @@ void engine::GameScreen::createMainMenuLayout()
     constexpr sf::Vector2f startPos = {50.f, 150.f};
     constexpr float offsetY = 75.f;
 
+    mainMenuLayout->AddTextElement("Choose what to do", {50.f, 75.f});
+
     mainMenuLayout->AddButtonElement("Investigate Location", {startPos.x, startPos.y}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
         ChangeUILayout(*investigateLocationLayout);
@@ -82,6 +84,8 @@ void engine::GameScreen::createInvestigateLocationLayout()
 {
     constexpr sf::Vector2f startPos = {50.f, 150.f};
     constexpr float offsetY = 75.f;
+
+    investigateLocationLayout->AddTextElement("Where do you want to investigate?", {50.f, 75.f});
 
     uint16_t clueTextId = investigateLocationLayout->AddTextElement("-", {300.f, 150.f});
     investigateLocationLayout->getElementById(clueTextId)->SetHidden(true);
@@ -137,6 +141,8 @@ void engine::GameScreen::createInterrogateSuspectLayout()
     constexpr sf::Vector2f startPos = {50.f, 150.f};
     constexpr float offsetY = 75.f;
 
+    interrogateSuspectLayout->AddTextElement("Who do you want to interrogate?", {50.f, 75.f});
+
     uint16_t responseTextId = interrogateSuspectLayout->AddTextElement("-", {300.f, 150.f});
     interrogateSuspectLayout->getElementById(responseTextId)->SetHidden(true);
 
@@ -182,8 +188,10 @@ void engine::GameScreen::createViewEvidenceLayout()
     constexpr float offsetY = 30.f;
     constexpr sf::Vector2f lastButtonPos = {50.f, 4.f * 75.f + 150.f};
 
-    int index = 0;
+    viewEvidenceLayout->AddTextElement("Collected Evidence:", {50.f, 75.f});
 
+    int index = 0;
+    
     for (const std::string &evidence : collectedEvidence)
     {
         if (evidence.empty())
@@ -204,19 +212,48 @@ void engine::GameScreen::createMakeAccusationLayout()
     constexpr sf::Vector2f startPos = {50.f, 150.f};
     constexpr float offsetY = 75.f;
 
-    makeAccusationLayout->AddButtonElement("Accuse Suspect A", {startPos.x, startPos.y}, [this]() { //
+    uint16_t accuseTextId = makeAccusationLayout->AddTextElement("-", {300.f, 150.f});
+    makeAccusationLayout->getElementById(accuseTextId)->SetHidden(true);
+
+    makeAccusationLayout->AddTextElement("Who do you want to accuse?", {50.f, 75.f});
+
+    makeAccusationLayout->AddButtonElement("Mujtaba", {startPos.x, startPos.y}, [this, accuseTextId]() { //
+        if (m_game_state.gameRunning == false)
+            return;
+
         playAudioOneTime("assets/Sound/button.mp3");
-        // Logic for accusing Suspect A
+
+        auto elem = dynamic_cast<gui::elements::TextElement *>(makeAccusationLayout->getElementById(accuseTextId));
+        elem->SetText("You accused Mujtaba!\nThe real culprit was Azhan.");
+        elem->SetHidden(false);
+
+        m_game_state.gameRunning = false;
     });
 
-    makeAccusationLayout->AddButtonElement("Accuse Suspect B", {startPos.x, startPos.y + offsetY}, [this]() { //
+    makeAccusationLayout->AddButtonElement("Azhan", {startPos.x, startPos.y + offsetY}, [this, accuseTextId]() { //
+        if (m_game_state.gameRunning == false)
+            return;
+
         playAudioOneTime("assets/Sound/button.mp3");
-        // Logic for accusing Suspect B
+
+        auto elem = dynamic_cast<gui::elements::TextElement *>(makeAccusationLayout->getElementById(accuseTextId));
+        elem->SetText("You accused Azhan!\nHe was the real culprit!");
+        elem->SetHidden(false);
+
+        m_game_state.gameRunning = false;
     });
 
-    makeAccusationLayout->AddButtonElement("Accuse Suspect C", {startPos.x, startPos.y + 2 * offsetY}, [this]() { //
+    makeAccusationLayout->AddButtonElement("Sheharyar", {startPos.x, startPos.y + 2 * offsetY}, [this, accuseTextId]() { //
+        if (m_game_state.gameRunning == false)
+            return;
+
         playAudioOneTime("assets/Sound/button.mp3");
-        // Logic for accusing Suspect C
+
+        auto elem = dynamic_cast<gui::elements::TextElement *>(makeAccusationLayout->getElementById(accuseTextId));
+        elem->SetText("You accused Sheharyar!\nThe real culprit was Azhan.");
+        elem->SetHidden(false);
+
+        m_game_state.gameRunning = false;
     });
 
     makeAccusationLayout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //

@@ -1,6 +1,7 @@
 #pragma once
 #include <functional>
 #include <vector>
+#include <unordered_map>
 
 #include <SFML/Graphics.hpp>
 
@@ -12,6 +13,11 @@ namespace engine
 {
     class UILayout;
 
+    struct GameState
+    {
+        bool gameRunning = true;
+    };
+
     /// @brief Main Screen
     class GameScreen
     {
@@ -19,6 +25,7 @@ namespace engine
         sf::RenderWindow m_window;
         UILayout *m_ui_layout = nullptr;
         GameScreenData m_data;
+        GameState m_game_state;
 
         // music/sound
         sf::Music backgroundMusic;   // for long background track
