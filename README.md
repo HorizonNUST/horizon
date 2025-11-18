@@ -49,3 +49,9 @@ Integrated the visual interface with core game logic.
 Worked on coding features and supporting the GUI.
 Helped connect user interactions with the underlying gameplay logic.
 
+# Future Improvements
+- We can add a better GUI to make the game more appealing and engaging.
+- We can add animation for a smoother flow of the program.
+- We can add character models to interact with them.
+- We can add levels to this game in which the detective has to solve different cases.
+- We can add a chase mechanic.
