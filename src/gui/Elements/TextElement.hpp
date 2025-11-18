@@ -1,6 +1,6 @@
 #pragma once
 #include "UIElement.hpp"
-#include "BitmapTextRenderer.hpp"
+
 #include "utils.hpp"
 
 namespace engine::gui::elements
@@ -14,20 +14,10 @@ namespace engine::gui::elements
         /// @param newText The New Text
         void SetText(const std::string &newText);
 
-        /// @brief Set the color of the text
-        /// @param color Text color
-        void SetColor(const sf::Color &color);
-
-        /// @brief Set character spacing
-        /// @param spacing Spacing between characters
-        void SetCharSpacing(float spacing);
-
-        /// @brief Get the bounds of the text
-        /// @return FloatRect containing the text bounds
-        sf::FloatRect GetBounds() const;
-
     private:
-        BitmapTextRenderer m_textRenderer;
+        sf::Font m_font;
+        std::optional<sf::Text> m_text;
+        sf::Vector2f m_position;
 
     protected:
         void draw(sf::RenderTarget &target, sf::RenderStates states) const override;

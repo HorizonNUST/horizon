@@ -6,50 +6,41 @@ engine::gui::elements::ButtonElement::ButtonElement(uint16_t id, const std::stri
 {
     setID(id);
 
+    if (!m_font.openFromFile("assets/Inter/Inter.ttf"))
+    {
+        throw("Inter.ttf not found");
+    }
+
     m_shape.setFillColor(config.fillColor);
     m_shape.setOutlineThickness(config.outlineThickness);
     m_shape.setOutlineColor(config.outlineColor);
 
-    // Setup text renderer
-    m_textRenderer.setText(text);
-    m_textRenderer.setColor(config.fontColor);
-    m_textRenderer.setCharSpacing(config.charSpacing);
+    m_text = sf::Text(m_font);
+    m_text->setString(text);
+    m_text->setCharacterSize(config.fontSize);
+    m_text->setFillColor(config.fontColor);
 
-    // Get text bounds for button sizing
-    sf::FloatRect textBounds = m_textRenderer.getLocalBounds();
+    sf::FloatRect textBounds = m_text->getLocalBounds();
 
-    // Position the shape
-    m_shape.setPosition({position.x + config.outlineThickness,
-                         position.y + config.outlineThickness});
+    m_shape.setPosition({
+        position.x + config.outlineThickness,
+        position.y + config.outlineThickness //
+    });
+    m_shape.setSize({
+        textBounds.size.x + 2.f * config.padding.x,
+        textBounds.size.y + 2.f * config.padding.y //
+    });
 
-    m_shape.setSize({textBounds.size.x + 2.f * config.padding.x,
-                     textBounds.size.y + 2.f * config.padding.y});
-
-    // Center text within button
-    sf::Vector2f textPosition = {
-        m_shape.getPosition().x + config.padding.x,
-        m_shape.getPosition().y + config.padding.y};
-
-    m_textRenderer.setPosition(textPosition);
+    m_text->setOrigin(textBounds.position + textBounds.size / 2.f);
+    m_text->setPosition(
+        m_shape.getPosition() + m_shape.getSize() / 2.f //
+    );
 }
 
-void engine::gui::elements::ButtonElement::SetText(const std::string &newText)
+inline void engine::gui::elements::ButtonElement::SetText(const std::string &newText)
 {
-    m_textRenderer.setText(newText);
-
-    // Recalculate button size
-    sf::FloatRect textBounds = m_textRenderer.getLocalBounds();
-    sf::Vector2f currentPos = m_shape.getPosition();
-
-    m_shape.setSize({textBounds.size.x + 2.f * m_config.padding.x,
-                     textBounds.size.y + 2.f * m_config.padding.y});
-
-    // Reposition text
-    sf::Vector2f textPosition = {
-        currentPos.x + m_config.padding.x,
-        currentPos.y + m_config.padding.y};
-
-    m_textRenderer.setPosition(textPosition);
+    if (m_text)
+        m_text->setString(newText);
 }
 
 void engine::gui::elements::ButtonElement::Update(const GameScreenData &data)
@@ -73,21 +64,21 @@ void engine::gui::elements::ButtonElement::Update(const GameScreenData &data)
             {
                 DEBUG_PRINT("CLICK");
                 m_callback();
-                m_textRenderer.setColor(m_config.fontClickColor);
+                m_text->setStyle(m_config.fontClickStyle);
+
                 m_pressedThisFrame = true;
             }
         }
         else
         {
             // hover logic
-            m_textRenderer.setColor(m_config.fontHoverColor);
+            m_text->setStyle(m_config.fontHoverStyle);
             m_pressedThisFrame = false;
         }
     }
     else
     {
-        m_textRenderer.setColor(m_config.fontColor);
-        m_pressedThisFrame = false;
+        m_text->setStyle(m_config.fontStyle);
     }
 }
 
@@ -102,5 +93,7 @@ void engine::gui::elements::ButtonElement::draw(sf::RenderTarget &target, sf::Re
         return;
 
     target.draw(m_shape, states);
-    m_textRenderer.draw(target, states);
+
+    if (m_text)
+        target.draw(*m_text, states);
 }

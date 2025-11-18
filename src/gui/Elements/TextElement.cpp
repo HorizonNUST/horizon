@@ -1,39 +1,32 @@
 #include "TextElement.hpp"
 
-using namespace engine::gui::elements;
-
-TextElement::TextElement(uint16_t id, const std::string &text, const sf::Vector2f &position, const sf::Vector2f &size)
+engine::gui::elements::TextElement::TextElement(uint16_t id, const std::string &text, const sf::Vector2f &position, const sf::Vector2f &size)
+    : m_position(position)
 {
     setID(id);
 
-    m_textRenderer.setPosition(position);
-    m_textRenderer.setText(text);
+    if (!m_font.openFromFile("assets/Inter/Inter.ttf"))
+    {
+        throw("Inter.ttf not found");
+    }
+
+    m_text = sf::Text(m_font);
+
+    m_text->setString(text);
+    m_text->setPosition(position);
 }
 
-void TextElement::SetText(const std::string &newText)
+void engine::gui::elements::TextElement::SetText(const std::string &newText)
 {
-    m_textRenderer.setText(newText);
+    if (m_text)
+        m_text->setString(newText);
 }
 
-void TextElement::SetColor(const sf::Color &color)
-{
-    m_textRenderer.setColor(color);
-}
-
-void TextElement::SetCharSpacing(float spacing)
-{
-    m_textRenderer.setCharSpacing(spacing);
-}
-
-sf::FloatRect TextElement::GetBounds() const
-{
-    return m_textRenderer.getGlobalBounds();
-}
-
-void TextElement::draw(sf::RenderTarget &target, sf::RenderStates states) const
+void engine::gui::elements::TextElement::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     if (IsHidden())
         return;
 
-    m_textRenderer.draw(target, states);
+    if (m_text)
+        target.draw(*m_text, states);
 }
