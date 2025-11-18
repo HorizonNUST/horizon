@@ -123,7 +123,7 @@ void engine::GameScreen::createInvestigateLocationLayout()
         addEvidenceItem("Found a knife in the Kitchen!");
 
         auto elem = dynamic_cast<gui::elements::TextElement *>(investigateLocationLayout->getElementById(clueInvestigateLayoutTextId));
-        elem->SetText("Found a bloody knife\nin the Kitchen!");
+        elem->SetText("Found a torn crumpled page from victim\'s journal under the sink. A half-smoked cigarette in trash beside a note with victim\'s name. A half-finished cocktail on shelf — something victim never drank — suggests someone else prepared it.");
         elem->SetHidden(false);
     });
 
@@ -133,7 +133,7 @@ void engine::GameScreen::createInvestigateLocationLayout()
         addEvidenceItem("Found a mysterious footprint in the Basement!");
 
         auto elem = dynamic_cast<gui::elements::TextElement *>(investigateLocationLayout->getElementById(clueInvestigateLayoutTextId));
-        elem->SetText("Found a mysterious footprint\nin the Basement!");
+        elem->SetText("Muddy shoeprints lead from furnace to broken window. Bloodstained rag lies on the workbench besides the victim\'s tools. Charred paper scraps are caught in the grate, as if someone tried burning evidence.");
         elem->SetHidden(false);
     });
 
@@ -143,7 +143,7 @@ void engine::GameScreen::createInvestigateLocationLayout()
         addEvidenceItem("Found a broken TV remote in the TV Lounge!");
 
         auto elem = dynamic_cast<gui::elements::TextElement *>(investigateLocationLayout->getElementById(clueInvestigateLayoutTextId));
-        elem->SetText("Found a broken TV remote\nin the TV Lounge!");
+        elem->SetText("Victim\'s gold watch is half-hidden under a spilled ashtray. A cracked lamp on the sideboard holds traces of soil on the shards. Muddy tracks run across the rug toward the backdoor, showing someone ran in a hurry. Their is a no landline phone and farmhouse is outsdie the city");
         elem->SetHidden(false);
     });
 
@@ -153,7 +153,7 @@ void engine::GameScreen::createInvestigateLocationLayout()
         addEvidenceItem("Found a strange footprint in the Garden!");
 
         auto elem = dynamic_cast<gui::elements::TextElement *>(investigateLocationLayout->getElementById(clueInvestigateLayoutTextId));
-        elem->SetText("Found a strange footprint\nin the Garden!");
+        elem->SetText("Garden gate latch is snapped off, and a rosebush has a broken branch. Bloody fingerprints are on shed door. A single muddy bootprint is seen before disappearing.");
         elem->SetHidden(false);
     });
 }
@@ -174,33 +174,33 @@ void engine::GameScreen::createInterrogateSuspectLayout()
         ChangeUILayout(*mainMenuLayout);
     });
 
-    interrogateSuspectLayout->AddButtonElement("Mujtaba", {startPos.x, startPos.y}, [this]() { //
+    interrogateSuspectLayout->AddButtonElement("Jackson", {startPos.x, startPos.y}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
 
-        addEvidenceItem("Mujtaba was in the kitchen!");
+        addEvidenceItem("Jackson was in the basement");
 
         auto elem = dynamic_cast<gui::elements::TextElement *>(interrogateSuspectLayout->getElementById(responseInterrogateTextId));
-        elem->SetText("Mujtaba: I was in the kitchen\nlooking for a snack.");
+        elem->SetText("Detective: Where were you and what were you doing when the murder happened? \n\nJackson: I was in the basement, I was there around 8:15 PM when the lights flickered, I was fixing the lantern. I didn\'t hear anything upstairs — then I came up and discovered the body.");
         elem->SetHidden(false);
     });
 
-    interrogateSuspectLayout->AddButtonElement("Azhan", {startPos.x, startPos.y + offsetY}, [this]() { //
+    interrogateSuspectLayout->AddButtonElement("Hagrid", {startPos.x, startPos.y + offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
 
-        addEvidenceItem("Azhan was in the basement!");
+        addEvidenceItem("Hagrid was in the TV lounge!");
 
         auto elem = dynamic_cast<gui::elements::TextElement *>(interrogateSuspectLayout->getElementById(responseInterrogateTextId));
-        elem->SetText("Azhan: I was in the basement\nchecking the boiler.");
+        elem->SetText("Detective: What about you and what were you doing when the murder happened? \n\nHagrid: I... I was in the TV lounge, rehearsing a speech. Actually, I answered a phone call to my editor at about 8:05 PM, so I didn\'t hear the gunshot. I must have dozed off soon after");
         elem->SetHidden(false);
     });
 
-    interrogateSuspectLayout->AddButtonElement("Sheharyar", {startPos.x, startPos.y + 2 * offsetY}, [this]() { //
+    interrogateSuspectLayout->AddButtonElement("Julian", {startPos.x, startPos.y + 2 * offsetY}, [this]() { //
         playAudioOneTime("assets/Sound/button.mp3");
 
-        addEvidenceItem("Sheharyar was in the TV lounge!");
+        addEvidenceItem("Julian was in the garden!");
 
         auto elem = dynamic_cast<gui::elements::TextElement *>(interrogateSuspectLayout->getElementById(responseInterrogateTextId));
-        elem->SetText("Sheharyar: I was in the TV\nlounge watching my favorite\nshow.");
+        elem->SetText("Detective: What about you, sir? \n\nJulian: I was outside in the garden, planting some new bulbs. I kept the back gate open by mistake. I came in around 8:30 PM when I heard the window close, but by then everything was chaos.");
         elem->SetHidden(false);
     });
 }
