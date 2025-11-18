@@ -25,6 +25,12 @@ uint16_t engine::UILayout::AddButtonElement(const std::string &text, const sf::V
     return lastID;
 }
 
+void engine::UILayout::ClearLayout()
+{
+    m_elements.clear();
+    lastID = 0;
+}
+
 engine::gui::elements::UIElement *engine::UILayout::getElementById(uint16_t id)
 {
     for (const std::unique_ptr<engine::gui::elements::UIElement> &element : m_elements)

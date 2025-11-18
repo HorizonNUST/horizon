@@ -20,19 +20,34 @@ namespace engine
         UILayout *m_ui_layout = nullptr;
         GameScreenData m_data;
 
-        //music/sound
+        // music/sound
         sf::Music backgroundMusic;   // for long background track
         sf::SoundBuffer soundBuffer; // for short sound
         sf::Sound sound;
 
-        // Layouts
-        UILayout* mainmenu = nullptr;
-        UILayout* room1 = nullptr;
-        UILayout* room2 = nullptr;
-        UILayout* room3 = nullptr;
-        UILayout* accuseSuspect = nullptr;
+        std::array<std::string, 8> collectedEvidence;
+        size_t lastCollectedEvidenceIndex = 0;
 
-        std::string correctSuspect = "Suspect A";
+        // Main Menu
+        UILayout *mainMenuLayout = nullptr;
+        UILayout *investigateLocationLayout = nullptr;
+        UILayout *interrogateSuspectLayout = nullptr;
+        UILayout *viewEvidenceLayout = nullptr;
+        UILayout *makeAccusationLayout = nullptr;
+
+        // Investigate Location Layouts
+        UILayout *kitchenLayout = nullptr;
+        UILayout *basementLayout = nullptr;
+        UILayout *tvLoungeLayout = nullptr;
+        UILayout *gardenLayout = nullptr;
+
+        void createMainMenuLayout();
+        void createInvestigateLocationLayout();
+        void createInterrogateSuspectLayout();
+        void createViewEvidenceLayout();
+        void createMakeAccusationLayout();
+
+        void addEvidenceItem(const std::string &item);
 
     public:
         GameScreen();
@@ -45,7 +60,7 @@ namespace engine
         /// @brief To Start the Game Loop
         void StartLoop();
 
-        void setBackgroundMusic(const std::string& path);
+        void setBackgroundMusic(const std::string &path);
         void playAudioOneTime(std::string path);
     };
 }

@@ -8,135 +8,243 @@ engine::GameScreen::GameScreen()
 {
     m_window = sf::RenderWindow(sf::VideoMode({800u, 600u}), "Horizon", sf::Style::Titlebar | sf::Style::Close);
 
-    setBackgroundMusic("assets/Sound/background.mp3");
+    // setBackgroundMusic("assets/Sound/background.mp3");
 
     // Layouts
-    mainmenu = new UILayout(0);
-    room1 = new UILayout(1);
-    room2 = new UILayout(2);
-    room3 = new UILayout(3);
-    accuseSuspect = new UILayout(4);
+    mainMenuLayout = new UILayout(0);
+    investigateLocationLayout = new UILayout(1);
+    interrogateSuspectLayout = new UILayout(2);
+    viewEvidenceLayout = new UILayout(3);
+    makeAccusationLayout = new UILayout(4);
 
-    //Main menu
-    mainmenu->AddButtonElement("Room 1", {20.f, 20.f}, [this]() {
-        ChangeUILayout(*room1);
-        playAudioOneTime("assets/Sound/button.mp3");
-    });
+    kitchenLayout = new UILayout(10);
+    basementLayout = new UILayout(11);
+    tvLoungeLayout = new UILayout(12);
+    gardenLayout = new UILayout(13);
 
-    mainmenu->AddButtonElement("Room 2", {20.f, 80.f}, [this]() {
-        ChangeUILayout(*room2);
-        playAudioOneTime("assets/Sound/button.mp3");
-    });
+    createMainMenuLayout();
+    createInvestigateLocationLayout();
+    createInterrogateSuspectLayout();
+    // evidence created on the fly
+    createMakeAccusationLayout();
 
-    mainmenu->AddButtonElement("Room 3", {20.f, 140.f}, [this]() {
-        ChangeUILayout(*room3);
-        playAudioOneTime("assets/Sound/button.mp3");
-    });
-
-    mainmenu->AddButtonElement("Accuse Suspect", {20.f, 200.f}, [this]() {
-        ChangeUILayout(*accuseSuspect);
-        playAudioOneTime("assets/Sound/button.mp3");
-    });
-
-    // First Room
-    auto r1_text = room1->AddTextElement("abc", {40.f, 200.f});
-    room1->getElementById(r1_text)->SetHidden(true);
-
-    room1->AddButtonElement("Toggle Clue Fingerprints on Broken Vase", {20.f, 120.f}, 
-        [this, r1_text]() {
-            auto* elem = room1->getElementById(r1_text);
-            elem->SetHidden(!elem->IsHidden());
-            playAudioOneTime("assets/Sound/button.mp3");
-        });
-
-    room1->AddButtonElement("Back", {20.f, 20.f}, [this]() {
-        ChangeUILayout(*mainmenu);
-        playAudioOneTime("assets/Sound/button.mp3");
-    });
-    
-    //Second Room
-    auto r2_text = room2->AddTextElement("Clue: Footprints", {40.f, 200.f});
-    room2->getElementById(r2_text)->SetHidden(true);
-
-    room2->AddButtonElement("Toggle Footprint", {20.f, 120.f},
-        [this, r2_text]() {
-            auto* elem = room2->getElementById(r2_text);
-            elem->SetHidden(!elem->IsHidden());
-            playAudioOneTime("assets/Sound/button.mp3");
-        });
-
-    room2->AddButtonElement("Back", {20.f, 20.f}, [this]() {
-        ChangeUILayout(*mainmenu);
-        playAudioOneTime("assets/Sound/button.mp3");
-    });
-
-    //Third Room
-    auto r3_text = room3->AddTextElement("Clue: Blood Stain", {40.f, 200.f});
-    room3->getElementById(r3_text)->SetHidden(true);
-
-    room3->AddButtonElement("Toggle Blood Stain on wall", {20.f, 120.f}, 
-        [this, r3_text]() {
-            auto* elem = room3->getElementById(r3_text);
-            elem->SetHidden(!elem->IsHidden());
-            playAudioOneTime("assets/Sound/button.mp3");
-        });
-
-    room3->AddButtonElement("Back", {20.f, 20.f}, [this]() {
-        ChangeUILayout(*mainmenu);
-        playAudioOneTime("assets/Sound/button.mp3");
-    });
-
-    //Accuse Suspect Layout
-    auto resultText = accuseSuspect->AddTextElement("", {40.f, 260.f});
-    accuseSuspect->getElementById(resultText)->SetHidden(false);
-
-    auto accuse = [&, resultText](std::string name) {
-        auto* resultElement = dynamic_cast<engine::gui::elements::TextElement*>(accuseSuspect->getElementById(resultText));
-        if (resultElement) {
-            if (name == correctSuspect)
-                resultElement->SetText("Correct, Bravo! " + name + " is the culprit.");
-            else
-                resultElement->SetText("You are Wrongly accusing innocent " + name);
-        }
-    };
-
-    accuseSuspect->AddButtonElement("Suspect A", {20.f, 20.f}, [=]() { accuse("Mujtaba"); });
-    accuseSuspect->AddButtonElement("Suspect B", {20.f, 80.f}, [=]() { accuse("Azhan"); });
-    accuseSuspect->AddButtonElement("Suspect C", {20.f, 140.f}, [=]() { accuse("Sheharyar"); });
-
-    accuseSuspect->AddButtonElement("Back", {20.f, 360.f}, [this]() {
-        ChangeUILayout(*mainmenu);
-        playAudioOneTime("assets/Sound/button.mp3");
-    });
-    /*secondLayout->AddButtonElement("Third Layout", {0.f, 0.f}, [this]() { //
-        ChangeUILayout(*thirdLayout);
-        playAudioOneTime("assets/Sound/button.mp3");
-    });
-
-    auto layoutBElemID = secondLayout->AddTextElement("TEST", {0.f, 120.f});
-    secondLayout->getElementById(layoutBElemID)->SetHidden(true);
-    secondLayout->AddButtonElement("Show Test", {0.f, 60.f}, [this, layoutBElemID]() { //
-        secondLayout->getElementById(layoutBElemID)->SetHidden(!secondLayout->getElementById(layoutBElemID)->IsHidden());
-        playAudioOneTime("assets/Sound/button.mp3");
-    });
-
-    thirdLayout->AddButtonElement("First Layout", {0.f, 0.f}, [this]() { //
-        ChangeUILayout(*firstLayout);
-        playAudioOneTime("assets/Sound/button.mp3");
-    });
-
-    thirdLayout->AddImageElement("assets/image.jpeg", {200.f, 100.f});*/
-
-    ChangeUILayout(*mainmenu);
+    ChangeUILayout(*mainMenuLayout);
 }
-
 engine::GameScreen::~GameScreen()
 {
-    delete mainmenu;
-    delete room1;
-    delete room2;
-    delete room3;
-    delete accuseSuspect;
+    delete mainMenuLayout;
+    delete investigateLocationLayout;
+    delete interrogateSuspectLayout;
+    delete viewEvidenceLayout;
+    delete makeAccusationLayout;
+
+    delete kitchenLayout;
+    delete basementLayout;
+    delete tvLoungeLayout;
+    delete gardenLayout;
+}
+
+void engine::GameScreen::createMainMenuLayout()
+{
+    // Main Menu
+    constexpr sf::Vector2f startPos = {50.f, 150.f};
+    constexpr float offsetY = 75.f;
+
+    mainMenuLayout->AddButtonElement("Investigate Location", {startPos.x, startPos.y}, [this]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+        ChangeUILayout(*investigateLocationLayout);
+    });
+
+    mainMenuLayout->AddButtonElement("Interrogate Suspect", {startPos.x, startPos.y + offsetY}, [this]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+        ChangeUILayout(*interrogateSuspectLayout);
+    });
+
+    mainMenuLayout->AddButtonElement("View Evidence", {startPos.x, startPos.y + 2 * offsetY}, [this]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+        viewEvidenceLayout->ClearLayout();
+        createViewEvidenceLayout();
+        ChangeUILayout(*viewEvidenceLayout);
+    });
+
+    mainMenuLayout->AddButtonElement("Make Accusation", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+        ChangeUILayout(*makeAccusationLayout);
+    });
+
+    mainMenuLayout->AddButtonElement("Exit Game", {startPos.x, startPos.y + 4 * offsetY}, [this]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+        m_window.close();
+    });
+}
+
+void engine::GameScreen::createInvestigateLocationLayout()
+{
+    constexpr sf::Vector2f startPos = {50.f, 150.f};
+    constexpr float offsetY = 75.f;
+
+    uint16_t clueTextId = investigateLocationLayout->AddTextElement("-", {300.f, 150.f});
+    investigateLocationLayout->getElementById(clueTextId)->SetHidden(true);
+
+    investigateLocationLayout->AddButtonElement("Kitchen", {startPos.x, startPos.y}, [this, clueTextId]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+
+        addEvidenceItem("Found a knife in the Kitchen!");
+
+        auto elem = dynamic_cast<gui::elements::TextElement *>(investigateLocationLayout->getElementById(clueTextId));
+        elem->SetText("Found a bloody knife\nin the Kitchen!");
+        elem->SetHidden(false);
+    });
+
+    investigateLocationLayout->AddButtonElement("Basement", {startPos.x, startPos.y + offsetY}, [this, clueTextId]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+
+        addEvidenceItem("Found a mysterious footprint in the Basement!");
+
+        auto elem = dynamic_cast<gui::elements::TextElement *>(investigateLocationLayout->getElementById(clueTextId));
+        elem->SetText("Found a mysterious footprint\nin the Basement!");
+        elem->SetHidden(false);
+    });
+
+    investigateLocationLayout->AddButtonElement("TV Lounge", {startPos.x, startPos.y + 2 * offsetY}, [this, clueTextId]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+
+        addEvidenceItem("Found a broken TV remote in the TV Lounge!");
+
+        auto elem = dynamic_cast<gui::elements::TextElement *>(investigateLocationLayout->getElementById(clueTextId));
+        elem->SetText("Found a broken TV remote\nin the TV Lounge!");
+        elem->SetHidden(false);
+    });
+
+    investigateLocationLayout->AddButtonElement("Garden", {startPos.x, startPos.y + 3 * offsetY}, [this, clueTextId]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+
+        addEvidenceItem("Found a strange footprint in the Garden!");
+
+        auto elem = dynamic_cast<gui::elements::TextElement *>(investigateLocationLayout->getElementById(clueTextId));
+        elem->SetText("Found a strange footprint\nin the Garden!");
+        elem->SetHidden(false);
+    });
+
+    investigateLocationLayout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 4 * offsetY}, [this]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+        ChangeUILayout(*mainMenuLayout);
+    });
+}
+
+void engine::GameScreen::createInterrogateSuspectLayout()
+{
+    constexpr sf::Vector2f startPos = {50.f, 150.f};
+    constexpr float offsetY = 75.f;
+
+    uint16_t responseTextId = interrogateSuspectLayout->AddTextElement("-", {300.f, 150.f});
+    interrogateSuspectLayout->getElementById(responseTextId)->SetHidden(true);
+
+    interrogateSuspectLayout->AddButtonElement("Mujtaba", {startPos.x, startPos.y}, [this, responseTextId]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+
+        addEvidenceItem("Mujtaba was in the kitchen!");
+
+        auto elem = dynamic_cast<gui::elements::TextElement *>(interrogateSuspectLayout->getElementById(responseTextId));
+        elem->SetText("Mujtaba: I was in the kitchen\nlooking for a snack.");
+        elem->SetHidden(false);
+    });
+
+    interrogateSuspectLayout->AddButtonElement("Azhan", {startPos.x, startPos.y + offsetY}, [this, responseTextId]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+
+        addEvidenceItem("Azhan was in the basement!");
+
+        auto elem = dynamic_cast<gui::elements::TextElement *>(interrogateSuspectLayout->getElementById(responseTextId));
+        elem->SetText("Azhan: I was in the basement\nchecking the boiler.");
+        elem->SetHidden(false);
+    });
+
+    interrogateSuspectLayout->AddButtonElement("Sheharyar", {startPos.x, startPos.y + 2 * offsetY}, [this, responseTextId]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+
+        addEvidenceItem("Sheharyar was in the TV lounge!");
+
+        auto elem = dynamic_cast<gui::elements::TextElement *>(interrogateSuspectLayout->getElementById(responseTextId));
+        elem->SetText("Sheharyar: I was in the TV\nlounge watching my favorite\nshow.");
+        elem->SetHidden(false);
+    });
+
+    interrogateSuspectLayout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+        ChangeUILayout(*mainMenuLayout);
+    });
+}
+
+void engine::GameScreen::createViewEvidenceLayout()
+{
+    constexpr sf::Vector2f startPos = {50.f, 150.f};
+    constexpr float offsetY = 30.f;
+    constexpr sf::Vector2f lastButtonPos = {50.f, 4.f * 75.f + 150.f};
+
+    int index = 0;
+
+    for (const std::string &evidence : collectedEvidence)
+    {
+        if (evidence.empty())
+            continue;
+
+        viewEvidenceLayout->AddTextElement(evidence, {startPos.x, startPos.y + index * offsetY});
+        index++;
+    }
+
+    viewEvidenceLayout->AddButtonElement("Back to Main Menu", lastButtonPos, [this]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+        ChangeUILayout(*mainMenuLayout);
+    });
+}
+
+void engine::GameScreen::createMakeAccusationLayout()
+{
+    constexpr sf::Vector2f startPos = {50.f, 150.f};
+    constexpr float offsetY = 75.f;
+
+    makeAccusationLayout->AddButtonElement("Accuse Suspect A", {startPos.x, startPos.y}, [this]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+        // Logic for accusing Suspect A
+    });
+
+    makeAccusationLayout->AddButtonElement("Accuse Suspect B", {startPos.x, startPos.y + offsetY}, [this]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+        // Logic for accusing Suspect B
+    });
+
+    makeAccusationLayout->AddButtonElement("Accuse Suspect C", {startPos.x, startPos.y + 2 * offsetY}, [this]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+        // Logic for accusing Suspect C
+    });
+
+    makeAccusationLayout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
+        playAudioOneTime("assets/Sound/button.mp3");
+        ChangeUILayout(*mainMenuLayout);
+    });
+}
+
+void engine::GameScreen::addEvidenceItem(const std::string &item)
+{
+    if (lastCollectedEvidenceIndex < collectedEvidence.size())
+    {
+        for (const auto &evidence : collectedEvidence)
+        {
+            if (evidence == item)
+            {
+                DEBUG_PRINT("Evidence already collected");
+                return;
+            }
+        }
+        collectedEvidence[lastCollectedEvidenceIndex] = item;
+        lastCollectedEvidenceIndex++;
+        DEBUG_PRINT("Evidence added: " + item);
+    }
+    else
+    {
+        DEBUG_PRINT("Evidence storage full, cannot add more evidence");
+    }
 }
 
 void engine::GameScreen::ChangeUILayout(UILayout &layout)
