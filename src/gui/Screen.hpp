@@ -2,12 +2,13 @@
 #include <functional>
 #include <vector>
 #include <unordered_map>
+#include <string>
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "UILayout.hpp"
-
-#include <SFML/Audio.hpp>
+#include "utils.hpp"
 
 namespace engine
 {
@@ -65,6 +66,9 @@ namespace engine
         uint16_t backViewEvidenceButtonId;
         uint16_t backMakeAccusationButtonId;
 
+        // Image ID
+        uint16_t imageId;
+
         void createMainMenuLayout();
         void createInvestigateLocationLayout();
         void createInterrogateSuspectLayout();
@@ -72,6 +76,8 @@ namespace engine
         void createMakeAccusationLayout();
 
         void addEvidenceItem(const std::string &item);
+
+        std::string getRandomImagePath() const;
 
     public:
         GameScreen();
