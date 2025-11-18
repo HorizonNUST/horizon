@@ -24,3 +24,14 @@ that allows you to accuse one of the three suspects.
 - Being nervous to answer the question does not mean that the suspect is a murderer. They could just be overwhelmed by the questions.
 - Don't overquestion the suspects. Try to ask meaningful questions.
 
+# Team Collaboration
+Our team has contributed equally to the project. Everyone has done everything, but the following are our main roles: 
+
+## Azhan Ali (Logic Designer)
+Made the game logic and flowchart. 
+
+## Muhammad Mujtaba (Programmer)
+Coded the program. Did major work on the GUI.
+
+## Sheharyar Khalid (Programmer)
+Coded the program. Also worked on the GUI.
